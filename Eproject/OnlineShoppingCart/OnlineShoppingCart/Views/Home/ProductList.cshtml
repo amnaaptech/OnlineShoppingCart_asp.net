@@ -1,0 +1,62 @@
+﻿@model OnlineShoppingCart.Models.ProductViewModel
+
+@{
+    ViewData["Title"] = "Products by Category";
+}
+
+<!-- /Products Cards Section -->
+
+<main class="main">
+    <div class="page-title light-background">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="current">Products</li>
+                </ol>
+            </nav>
+            <h1> Category Product List</h1>
+        </div>
+    </div>
+
+
+    <section id="best-sellers" class="best-sellers section">
+
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <div class="row g-4 justify-content-center">
+
+
+
+                <!-- Card 1 -->
+                @foreach (var product in Model.ProductsToDisplay.Take(8))
+                {
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card">
+                            <img src="~/ProdImages/@product.ImagePath"
+                                 class=""
+                                 alt="@product.ProductName" "
+                                 height="300"
+                                 style="object-fit: cover;" />
+                            <div class="card-img-overlay d-flex">
+                                <a class="icon-btn" aria-label="View details" asp-action="singleProduct" asp-controller="Home" asp-route-id="@product.ProductId">
+                                    View Details
+                                </a>
+
+
+
+                            </div>
+                            <div class="bg-warning px-3 py-3">
+
+                                <h3 class="card-title text-black">@product.ProductName</h3>
+                                <p class="product-price">@product.Price Rs</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </section>
+
+</main>

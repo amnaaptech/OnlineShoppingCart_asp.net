@@ -1,0 +1,583 @@
+﻿@model List<OnlineShoppingCart.Models.Cart>
+
+@{
+    ViewData["Title"] = "Order Summary";
+    var subtotal = Model.Sum(c => c.Product.Price * c.Quantity);
+    var shipping = 150m;
+    var tax = subtotal * 0.05m;
+    var total = subtotal + shipping + tax;
+    var totalItems = Model.Sum(c => c.Quantity);
+    var estimatedDelivery = DateTime.Now.AddDays(3).ToString("dddd, MMMM dd, yyyy");
+}
+
+<style>
+    .payment-details {
+        background: #f8f9fa;
+        border-radius: 5px;
+        border: 1px solid #dee2e6;
+    }
+
+        .payment-details h6 {
+            margin-bottom: 15px;
+        }
+</style>
+
+<main class="main">
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="text-center">
+            <div class="spinner"></div>
+            <p class="mt-3">Processing your order...</p>
+        </div>
+    </div>
+
+    <!-- Page Title -->
+    <div class="page-title">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a asp-controller="Cart" asp-action="Index">Cart</a></li>
+                    <li class="current">Order Summary</li>
+                </ol>
+            </nav>
+            <h1>Order Summary</h1>
+        </div>
+    </div>
+
+    <!-- Order Summary Section -->
+    <section id="order-summary" class="order-summary section">
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <!-- TempData Messages -->
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle"></i> @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle"></i> @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            <form asp-action="PlaceOrder" method="post" id="order-form" novalidate>
+                <div class="row">
+                    <!-- Order Items Column -->
+                    <div class="col-lg-8">
+                        <div class="order-items-section">
+                            <div class="section-header">
+                                <h4><i class="bi bi-bag-check"></i> Order Items (@totalItems items)</h4>
+                                <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                                     Edit Cart
+                                </a>
+                            </div>
+
+                            <div class="items-list">
+                                @foreach (var item in Model)
+                                {
+                                    <div class="order-item">
+                                        <div class="item-image">
+                                            <img src="~/ProdImages/@item.Product.ImagePath"
+                                                 alt="@item.Product.ProductName"
+                                                 class="img-fluid"
+                                                 onerror="this.src='/images/no-image.jpg'">
+                                        </div>
+                                        <div class="item-details">
+                                            <h6 class="item-name">@item.Product.ProductName</h6>
+                                            <p class="item-category">@item.Product.Category.CategoryName</p>
+                                            <div class="item-specs">
+                                                <span class="spec">Qty: @item.Quantity</span>
+                                                <span class="spec">Unit Price: Rs @item.Product.Price.ToString("N2")</span>
+                                                @if (item.Product.WarrantyPeriodDays.HasValue)
+                                                {
+                                                    <span class="spec">Warranty: @item.Product.WarrantyPeriodDays days</span>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="item-total">
+                                            <span class="total-amount">Rs @((item.Product.Price * item.Quantity).ToString("N2"))</span>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Shipping Address Section -->
+                        <div class="shipping-section">
+                            <div class="section-header">
+                                <h4><i class="bi bi-geo-alt"></i> Shipping Address</h4>
+                            </div>
+                            <div class="address-form">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="FullName" class="form-label">Full Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="FullName" name="FullName" required maxlength="100">
+                                        <div class="invalid-feedback">Please enter your full name.</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="Phone" class="form-label">Phone Number <span class="text-danger">*</span></label>
+                                        <input type="tel" class="form-control" id="Phone" name="Phone" required pattern="[0-9]{11}" maxlength="11">
+                                        <div class="invalid-feedback">Please enter a valid 11-digit phone number.</div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="Address" class="form-label">Complete Address <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" id="Address" name="Address" rows="3" required maxlength="500" placeholder="Enter your complete address including house number, street, landmark"></textarea>
+                                    <div class="invalid-feedback">Please enter your complete address.</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="City" class="form-label">City <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="City" name="City" required maxlength="100">
+                                        <div class="invalid-feedback">Please enter your city.</div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="State" class="form-label">State/Province <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="State" name="State" required maxlength="100">
+                                        <div class="invalid-feedback">Please enter your state/province.</div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="ZipCode" class="form-label">ZIP/Postal Code <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="ZipCode" name="ZipCode" required maxlength="20">
+                                        <div class="invalid-feedback">Please enter your ZIP/postal code.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Extra Fields for Card Payment -->
+
+                        <div id="card-details" class="shipping-section mt-3 p-3  " style="display: none;">
+                            @* <h6 class="section-header"><i class="bi bi-credit-card-2-front me-2"></i> Card Details</h6> *@
+                            <div class="section-header">
+                                <h4><i class="bi bi-credit-card-2-front"></i> Card Details</h4>
+                            </div>
+                            <div class="mb-3">
+                                <label for="CardHolderName" class="form-label">Card Holder Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="CardHolderName" name="CardHolderName" maxlength="100">
+                                <div class="invalid-feedback">Please enter the card holder's name.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="CardNumber" class="form-label">Card Number <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="CardNumber" name="CardNumber" pattern="[0-9]{16}" maxlength="16">
+                                <div class="invalid-feedback">Please enter a valid 16-digit card number.</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="ExpiryDate" class="form-label">Expiry Date <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="ExpiryDate" name="ExpiryDate" placeholder="MM/YY" pattern="(0[1-9]|1[0-2])\/[0-9]{2}">
+                                    <div class="invalid-feedback">Please enter a valid expiry date (MM/YY).</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="CVC" class="form-label">CVC <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="CVC" name="CVC" pattern="[0-9]{3,4}" maxlength="4">
+                                    <div class="invalid-feedback">Please enter a valid 3 or 4-digit CVC.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Extra Fields for Bank Payment -->
+                        <div id="bank-details" class="shipping-section mt-3 p-3" style="display: none;">
+                            <div class="section-header">
+                                <h4><i class="bi bi-bank"></i> Bank Details</h4>
+                            </div>
+                            <div class="mb-3">
+                                <label for="BankName" class="form-label">Bank Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="BankName" name="BankName" maxlength="100">
+                                <div class="invalid-feedback">Please enter the bank name.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="BankAccountNumber" class="form-label">Account Number <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="BankAccountNumber" name="BankAccountNumber" pattern="[0-9]{16}" maxlength="16">
+                                <div class="invalid-feedback">Please enter a valid 16-digit account number.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="TransactionId" class="form-label">Transaction ID <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="TransactionId" name="TransactionId" pattern="[0-9]{10}" maxlength="10">
+                                <div class="invalid-feedback">Please enter a valid 10-digit transaction ID.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order Summary Column -->
+                    <div class="col-lg-4">
+                        <div class="summary-card position-sticky" style="top: 20px;">
+                            <div class="card">
+                                <div class="card-header" style="background:#000000;">
+                                    <h5 class="mb-0 text-white"> Order Summary</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="summary-breakdown">
+                                        <div class="breakdown-item">
+                                            <span>Subtotal (@totalItems items):</span>
+                                            <span>Rs @subtotal.ToString("N2")</span>
+                                        </div>
+                                        <div class="breakdown-item">
+                                            <span>Shipping & Handling:</span>
+                                            <span>Rs @shipping.ToString("N2")</span>
+                                        </div>
+                                        <div class="breakdown-item">
+                                            <span>Tax (5%):</span>
+                                            <span>Rs @tax.ToString("N2")</span>
+                                        </div>
+                                        <hr>
+                                        <div class="breakdown-total">
+                                            <span><strong>Total Amount:</strong></span>
+                                            <span><strong>Rs @total.ToString("N2")</strong></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="estimated-delivery">
+                                        <h6><i class="bi bi-truck"></i> Estimated Delivery</h6>
+                                        <p class="delivery-date" id="delivery-date">@estimatedDelivery</p>
+                                        <small class="text-muted" id="delivery-type-text">Standard delivery (3-5 business days)</small>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-white border-0 p-3">
+                                    <button type="submit" class="btn btn-success w-100 mb-2" id="place-order-btn">
+                                        <i class="bi bi-credit-card"></i> Place Order
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary w-100" onclick="goBack()">
+                                        <i class="bi bi-arrow-left"></i> Back to Cart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payment Methods -->
+                        <div class="payment-methods mt-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="mb-0">Payment Method</h6>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="payment-options">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="PaymentMethod" id="cod" value="cod" checked>
+                                            <label class="form-check-label" for="cod">
+                                                 Cash on Delivery (COD)
+                                                <small class="d-block text-muted mt-1">Pay when you receive your order</small>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="PaymentMethod" id="card" value="card">
+                                            <label class="form-check-label" for="card">
+                                                Credit/Debit Card
+                                                <small class="d-block text-muted mt-1">Secure online payment - Express delivery</small>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="PaymentMethod" id="bank" value="bank">
+                                            <label class="form-check-label" for="bank">
+                                                Bank Transfer
+                                                <small class="d-block text-muted mt-1">Direct bank transfer</small>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                          
+
+                                  
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Security Info -->
+                        <div class="security-info mt-3">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-shield-check text-success fs-4"></i>
+                                    <small class="d-block text-muted mt-2">
+                                        Your order and payment information is secure and encrypted.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hidden fields for order totals -->
+                <input type="hidden" name="Subtotal" value="@subtotal" />
+                <input type="hidden" name="Shipping" value="@shipping" />
+                <input type="hidden" name="Tax" value="@tax" />
+                <input type="hidden" name="Total" value="@total" />
+                <input type="hidden" name="EstimatedDelivery" value="@estimatedDelivery" />
+            </form>
+        </div>
+    </section>
+</main>
+
+<script>
+     document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('order-form');
+        const paymentOptions = document.querySelectorAll('input[name="PaymentMethod"]');
+        const deliveryDateElement = document.getElementById('delivery-date');
+        const deliveryTypeText = document.getElementById('delivery-type-text');
+        const cardDetails = document.getElementById('card-details');
+        const bankDetails = document.getElementById('bank-details');
+
+        // Payment method change handler
+        paymentOptions.forEach(option => {
+            option.addEventListener('change', function() {
+                updateDeliveryInfo(this.value);
+                updatePaymentFields(this.value);
+            });
+        });
+
+        // Show/hide payment fields
+        function updatePaymentFields(paymentMethod) {
+            cardDetails.style.display = paymentMethod === 'card' ? 'block' : 'none';
+            bankDetails.style.display = paymentMethod === 'bank' ? 'block' : 'none';
+
+            // Clear fields when hidden
+            if (paymentMethod !== 'card') {
+                document.getElementById('CardHolderName').value = '';
+                document.getElementById('CardNumber').value = '';
+                document.getElementById('ExpiryDate').value = '';
+                document.getElementById('CVC').value = '';
+            }
+            if (paymentMethod !== 'bank') {
+                document.getElementById('BankName').value = '';
+                document.getElementById('BankAccountNumber').value = '';
+                document.getElementById('TransactionId').value = '';
+            }
+        }
+
+        // Update delivery information
+        function updateDeliveryInfo(paymentMethod) {
+            const now = new Date();
+            let deliveryDays = 3;
+            let deliveryText = 'Standard delivery (3-5 business days)';
+
+            switch(paymentMethod) {
+                case 'cod':
+                    deliveryDays = 3;
+                    deliveryText = 'Standard delivery (3-5 business days)';
+                    break;
+                case 'card':
+                    deliveryDays = 2;
+                    deliveryText = 'Express delivery (2-3 business days)';
+                    break;
+                case 'bank':
+                    deliveryDays = 4;
+                    deliveryText = 'Bank transfer delivery (4-6 business days)';
+                    break;
+            }
+
+            const deliveryDate = new Date(now.getTime() + (deliveryDays * 24 * 60 * 60 * 1000));
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+            deliveryDateElement.textContent = deliveryDate.toLocaleDateString('en-US', options);
+            deliveryTypeText.textContent = deliveryText;
+            document.querySelector('input[name="EstimatedDelivery"]').value = deliveryDate.toLocaleDateString('en-US', options);
+        }
+
+        // Form validation
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Reset previous validation states
+            const inputs = form.querySelectorAll('.form-control');
+            inputs.forEach(input => {
+                input.classList.remove('is-invalid', 'is-valid');
+            });
+
+            let isValid = true;
+
+            // Validate required fields
+            const requiredFields = [
+                { id: 'FullName', minLength: 2, message: 'Please enter a valid full name (at least 2 characters).' },
+                { id: 'Phone', pattern: /^[0-9+\-\s()]+$/, message: 'Please enter a valid phone number (10-15 digits).' },
+                { id: 'Address', minLength: 10, message: 'Please enter a complete address (at least 10 characters).' },
+                { id: 'City', minLength: 2, message: 'Please enter a valid city name.' },
+                { id: 'State', minLength: 2, message: 'Please enter a valid state/province.' },
+                { id: 'ZipCode', minLength: 3, message: 'Please enter a valid ZIP/postal code.' }
+            ];
+
+            // Add card and bank fields validation if selected
+            const paymentMethod = document.querySelector('input[name="PaymentMethod"]:checked').value;
+            if (paymentMethod === 'card') {
+                requiredFields.push(
+                    { id: 'CardHolderName', minLength: 2, message: 'Please enter a valid card holder name.' },
+                    { id: 'CardNumber', pattern: /^[0-9]{16}$/, message: 'Please enter a valid 16-digit card number.' },
+                    { id: 'ExpiryDate', pattern: /^(0[1-9]|1[0-2])\/[0-9]{2}$/, message: 'Please enter a valid expiry date (MM/YY).' },
+                    { id: 'CVC', pattern: /^[0-9]{3,4}$/, message: 'Please enter a valid 3 or 4-digit CVC.' }
+                );
+                } else if (paymentMethod === 'bank') {
+        requiredFields.push(
+            { id: 'BankName', minLength: 2, message: 'Please enter a valid bank name.' },
+            { id: 'BankAccountNumber', pattern: /^[0-9]{16}$/, message: 'Please enter a valid 16-digit account number.' },
+            { id: 'TransactionId', pattern: /^[0-9]{10}$/, message: 'Please enter a valid 10-digit transaction ID.' }
+        );
+    }
+
+            requiredFields.forEach(field => {
+                const input = document.getElementById(field.id);
+                const value = input.value.trim();
+
+                if (!value) {
+                    showFieldError(input, `${field.id.replace(/([A-Z])/g, ' $1')} is required.`);
+                    isValid = false;
+                } else if (field.pattern && !field.pattern.test(value)) {
+                    showFieldError(input, field.message);
+                    isValid = false;
+                } else if (field.minLength && value.length < field.minLength) {
+                    showFieldError(input, field.message);
+                    isValid = false;
+                } else {
+                    input.classList.add('is-valid');
+                }
+            });
+
+            if (isValid) {
+                document.getElementById('loading-overlay').style.display = 'flex';
+                const submitBtn = document.getElementById('place-order-btn');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Processing...';
+                form.submit();
+            } else {
+                const firstError = form.querySelector('.is-invalid');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    firstError.focus();
+                }
+                // Show specific error message
+                let errorMessage = 'Please fill all required fields correctly: ';
+                form.querySelectorAll('.is-invalid').forEach(input => {
+                    errorMessage += input.id.replace(/([A-Z])/g, ' $1') + ', ';
+                });
+                alert(errorMessage.slice(0, -2));
+            }
+        });
+
+        function showFieldError(input, message) {
+            input.classList.add('is-invalid');
+            const feedback = input.nextElementSibling;
+            if (feedback && feedback.classList.contains('invalid-feedback')) {
+                feedback.textContent = message;
+            }
+        }
+
+        // Real-time validation
+        const inputs = form.querySelectorAll('.form-control');
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                validateField(this);
+            });
+
+            input.addEventListener('input', function() {
+                if (this.classList.contains('is-invalid')) {
+                    validateField(this);
+                }
+            });
+        });
+
+        function validateField(input) {
+            const value = input.value.trim();
+            input.classList.remove('is-invalid', 'is-valid');
+
+            if (input.hasAttribute('required') && !value) {
+                return;
+            }
+
+            if (value) {
+                let isValid = true;
+                let message = '';
+
+                switch(input.id) {
+                    case 'FullName':
+                        isValid = value.length >= 2;
+                        message = 'Name must be at least 2 characters long.';
+                        break;
+                    case 'Phone':
+    isValid = /^[0-9]{11}$/.test(value);
+    message = 'Phone number must be exactly 11 digits.';
+    break;
+                    case 'Address':
+                        isValid = value.length >= 10;
+                        message = 'Address must be at least 10 characters long.';
+                        break;
+                    case 'City':
+                        isValid = value.length >= 2;
+                        message = 'City name must be at least 2 characters long.';
+                        break;
+                    case 'State':
+                        isValid = value.length >= 2;
+                        message = 'State/province must be at least 2 characters long.';
+                        break;
+                    case 'ZipCode':
+                        isValid = value.length >= 3;
+                        message = 'ZIP/postal code must be at least 3 characters long.';
+                        break;
+                    case 'CardHolderName':
+                        isValid = value.length >= 2;
+                        message = 'Card holder name must be at least 2 characters long.';
+                        break;
+                    case 'CardNumber':
+                        isValid = /^[0-9]{16}$/.test(value);
+                        message = 'Card number must be 16 digits long.';
+                        break;
+                    
+
+                    case 'ExpiryDate':
+    isValid = /^(0[1-9]|1[0-2])\/[0-9]{2}$/.test(value);
+    if (isValid) {
+        const [month, year] = value.split('/');
+        const expiryDate = new Date(`20${year}`, month - 1);
+        const now = new Date();
+        isValid = expiryDate > now;
+        message = isValid ? '' : 'Card has expired.';
+    } else {
+        message = '"Expiry date must be in valid format.';
+    }
+
+        break;
+
+
+
+
+
+
+
+
+
+
+
+                    case 'CVC':
+                        isValid = /^[0-9]{3,4}$/.test(value);
+                        message = 'CVC must be 3 or 4 digits long.';
+                        break;
+                    case 'BankName':
+                        isValid = value.length >= 2;
+                        message = 'Bank name must be at least 2 characters long.';
+                        break;
+                 case 'BankAccountNumber':
+    isValid = /^[0-9]{16}$/.test(value);
+    message = 'Account number must be exactly 16 digits long.';
+    break;
+                    
+                  case 'TransactionId':
+    isValid = /^[0-9]{10}$/.test(value);
+    message = 'Transaction ID must be exactly 10 digits long.';
+    break;
+                }
+
+                if (!isValid) {
+                    showFieldError(input, message);
+                } else {
+                    input.classList.add('is-valid');
+                }
+            }
+        }
+
+        function goBack() {
+            window.location.href = '@Url.Action("Index", "Cart")';
+        }
+    });
+</script>

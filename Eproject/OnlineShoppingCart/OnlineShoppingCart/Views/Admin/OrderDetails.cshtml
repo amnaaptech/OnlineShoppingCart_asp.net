@@ -1,0 +1,428 @@
+﻿@model OnlineShoppingCart.Models.Order
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<main class="main">
+    <!-- Page Title -->
+    <div class="page-title">
+        <div class="container">
+           
+            <h2 class="text-center mb-4 mt-4" style="color: #1a2035; font-size:22px ; font-weight: 700">Order Details</h2>
+        </div>
+    </div>
+
+    <!-- Order Details Section -->
+    <section class="order-details section" data-aos="fade-up" data-aos-delay="100">
+        <div class="container">
+            <!-- Success/Error Messages -->
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle me-2"></i> @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle me-2"></i> @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            <div class="card shadow-sm">
+                <div class="card-header  text-white " style="background: #1a2035">
+                    <h5 class="mb-0">Order # @Model.OrderNumber</h5>
+                    <small>Placed on @Model.OrderDate.ToString("dddd, MMMM dd, yyyy")</small>
+                </div>
+                <div class="card-body">
+                    <!-- Order Items -->
+                    <div class="mb-4">
+                        <h6 class="section-header"><i class="bi bi-bag-check me-2"></i> Order Items</h6>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Quantity</th>
+                                        <th>Unit Price</th>
+                                        <th>Total</th>
+                                        <th>Warranty</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.OrderItems)
+                                    {
+                                        <tr>
+                                            <td>@item.Product.ProductName</td>
+                                            <td>@item.Quantity</td>
+                                            <td>Rs @item.UnitPrice.ToString("N2")</td>
+                                            <td>Rs @(item.Quantity* item.UnitPrice)</td>
+                                            <td>@(item.WarrantyPeriodDays.HasValue ? $"{item.WarrantyPeriodDays} days" : "N/A")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Shipping and Order Summary -->
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <h6 class="section-header fw-bold"><i class="bi bi-geo-alt me-2"></i> Shipping Address</h6>
+                            <div class="card bg-light p-3">
+                                <p class="mb-1"><strong>@Model.FullName</strong></p>
+                                <p class="mb-1">@Model.Address</p>
+                                <p class="mb-1">@Model.City, @Model.State @Model.ZipCode</p>
+                                <p class="mb-0">Phone: @Model.Phone</p>
+                            </div>
+                        </div>
+                        <!-- Replace the existing Order Summary section with this -->
+                        <div class="col-md-6 mb-4">
+                            <h6 class="section-header fw-bold"><i class="bi bi-receipt me-2"></i> Order Summary</h6>
+                            <div class="card bg-light p-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Subtotal</span>
+                                    <span>Rs @Model.Subtotal.ToString("N2")</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Shipping</span>
+                                    <span>Rs @Model.Shipping.ToString("N2")</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Tax</span>
+                                    <span>Rs @Model.Tax.ToString("N2")</span>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between">
+                                    <strong>Total</strong>
+                                    <strong>Rs @Model.Total.ToString("N2")</strong>
+                                </div>
+                                <div class="mt-3">
+                                    <p class="mb-1">Payment Method: <strong>@Model.PaymentMethod.ToUpper()</strong></p>
+                                    @if (Model.PaymentMethod == "card")
+                                    {
+                                        <p class="mb-1">Card Holder: <strong>@(Model.CardHolderName ?? "N/A")</strong></p>
+                                        <p class="mb-1">Card Number: <strong>@(Model.CardNumber != null ? "**** **** **** " + Model.CardNumber.Substring(Model.CardNumber.Length - 4) : "N/A")</strong></p>
+                                    }
+                                    else if (Model.PaymentMethod == "bank")
+                                    {
+                                        <p class="mb-1">Bank Name: <strong>@(Model.BankName ?? "N/A")</strong></p>
+                                        <p class="mb-1">Account Number: <strong>@(Model.BankAccountNumber ?? "N/A")</strong></p>
+                                        <p class="mb-1">Transaction ID: <strong>@(Model.TransactionId ?? "N/A")</strong></p>
+                                    }
+                                    <p class="mb-1">Payment Status: <span class="badge @GetStatusClass(Model.PaymentStatus)">@Model.PaymentStatus</span></p>
+                                    <p class="mb-1">Order Status: <span class="badge @GetStatusClass(Model.OrderStatus)">@Model.OrderStatus</span></p>
+                                    <p class="mb-1">
+                                        Delivery Type: <strong>
+                                            @switch (Model.DeliveryType)
+                                            {
+                                                case "1":
+                                                    <span>Standard (COD)</span>
+                                                    break;
+                                                case "2":
+                                                    <span>Express (Card)</span>
+                                                    break;
+                                                case "3":
+                                                    <span>Bank Transfer</span>
+                                                    break;
+                                                default:
+                                                    <span>Unknown</span>
+                                                    break;
+                                            }
+                                        </strong>
+                                    </p>
+                                    <p class="mb-1">Estimated Delivery: <strong>@Model.EstimatedDeliveryDate.ToString("dddd, MMMM dd, yyyy")</strong></p>
+                                    @if (Model.DispatchedDate.HasValue)
+                                    {
+                                        <p class="mb-1">Dispatched On: <strong>@Model.DispatchedDate.Value.ToString("dddd, MMMM dd, yyyy")</strong></p>
+                                    }
+                                    @if (Model.DeliveryDate.HasValue)
+                                    {
+                                        <p class="mb-0">Delivered On: <strong>@Model.DeliveryDate.Value.ToString("dddd, MMMM dd, yyyy")</strong></p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Return/Replacement Management -->
+                    <div class="row">
+
+
+
+                        <div class="col-md-4 mb-4">
+                            <h6 class="section-header fw-bold"><i class="bi bi-arrow-return-left me-2"></i> Manage Return Request</h6>
+                            <div class="card bg-light p-3">
+                                @if (Model.ReturnRequested && Model.OrderStatus != "Canceled")
+                                {
+                                    <p class="mb-2">Return Status: <span class="badge @GetStatusClass(Model.ReturnStatus)">@Model.ReturnStatus</span></p>
+                                    @if (!string.IsNullOrEmpty(Model.ReturnReason))
+                                    {
+                                        <p class="mb-2">Reason: @Model.ReturnReason</p>
+                                    }
+                                    @if (Model.PaymentMethod == "cod")
+                                    {
+                                        @if (!string.IsNullOrEmpty(Model.RefundEasypaisaNumber))
+                                        {
+                                            <p class="mb-2">Refund to Easypaisa: <strong>@Model.RefundEasypaisaNumber</strong></p>
+                                        }
+                                        @if (!string.IsNullOrEmpty(Model.RefundBankAccountNumber))
+                                        {
+                                            <p class="mb-2">Refund to Bank Account: <strong>************@Model.RefundBankAccountNumber.Substring(Model.RefundBankAccountNumber.Length - 4)</strong></p>
+                                        }
+                                    }
+                                    @if (Model.ReturnStatus != "Approved" && Model.ReturnStatus != "Rejected")
+                                    {
+                                        <form asp-action="HandleReturnRequest" asp-route-orderId="@Model.OrderId" method="post">
+                                            @Html.AntiForgeryToken()
+                                            <div class="mb-3">
+                                                <label for="newStatus" class="form-label">Update Return Status</label>
+                                                <select class="form-select" id="newStatus" name="newStatus" required>
+                                                    <option value="Pending" selected="@(Model.ReturnStatus == "Pending")">Pending</option>
+                                                    <option value="Approved">Approved</option>
+                                                    <option value="Rejected">Rejected</option>
+                                                </select>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary w-100">
+                                                <i class="bi bi-check-circle me-1"></i> Update Return Status
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <p class="text-muted">Return request is @Model.ReturnStatus.ToLower() and cannot be modified further.</p>
+                                    }
+                                }
+                                else
+                                {
+                                    <p class="text-muted">
+                                        @(Model.OrderStatus == "Canceled" ? "No return request possible for canceled order." : "No return request submitted.")
+                                    </p>
+                                }
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+                        <div class="col-md-4 mb-4">
+                            <h6 class="section-header fw-bold"><i class="bi bi-arrow-repeat me-2"></i> Manage Replacement Request</h6>
+                            <div class="card bg-light p-3">
+                                @if (Model.ReplacementRequested && Model.OrderStatus != "Canceled")
+                                {
+                                    <p class="mb-2">Replacement Status: <span class="badge @GetStatusClass(Model.ReplacementStatus)">@Model.ReplacementStatus</span></p>
+                                    @if (!string.IsNullOrEmpty(Model.ReplacementReason))
+                                    {
+                                        <p class="mb-2">Reason: @Model.ReplacementReason</p>
+                                    }
+                                    @if (Model.ReplacementStatus != "Approved" && Model.ReplacementStatus != "Rejected")
+                                    {
+                                        <form asp-action="HandleReplacementRequest" asp-route-orderId="@Model.OrderId" method="post">
+                                            @Html.AntiForgeryToken()
+                                            <div class="mb-3">
+                                                <label for="newStatus" class="form-label">Update Replacement Status</label>
+                                                <select class="form-select" id="newStatus" name="newStatus" required>
+                                                    <option value="Pending" selected="@(Model.ReplacementStatus == "Pending")">Pending</option>
+                                                    <option value="Approved">Approved</option>
+                                                    <option value="Rejected">Rejected</option>
+                                                </select>
+                                            </div>
+                                            <button type="submit" class="btn  w-100 rounded-0 " style="background: #1a2035; color: #fff">
+                                                <i class="bi bi-check-circle me-1"></i> Update Replacement Status
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <p class="text-muted">Replacement request is @Model.ReplacementStatus.ToLower() and cannot be modified further.</p>
+                                    }
+                                }
+                                else
+                                {
+                                    <p class="text-muted">
+                                        @(Model.OrderStatus == "Canceled" ? "No replacement request possible for canceled order." : "No replacement request submitted.")
+                                    </p>
+                                }
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <!-- Admin Actions -->
+                    <div class="row">
+                       
+
+                       
+                        <div class="col-md-4 mb-4">
+                            <h6 class="section-header fw-bold"><i class="bi bi-credit-card me-2"></i> Update Payment Status</h6>
+                            <form asp-action="UpdatePaymentStatus" asp-route-orderId="@Model.OrderId" method="post" class="card p-3">
+                                @Html.AntiForgeryToken()
+                                <div class="mb-3">
+                                    <label for="newStatus" class="form-label">Payment Status</label>
+                                    <select class="form-select" id="newStatus" name="newStatus" @((ViewBag.IsOrderLocked as bool? ?? false) ? "disabled" : "")>
+                                        <option value="Pending" selected="@(Model.PaymentStatus == "Pending")">Pending</option>
+                                        <option value="Cleared" selected="@(Model.PaymentStatus == "Cleared")">Cleared</option>
+                                        <option value="PaidOnDelivery" selected="@(Model.PaymentStatus == "PaidOnDelivery")">Paid on Delivery</option>
+                                        <option value="Refund Initiated" selected="@(Model.PaymentStatus == "Refund Initiated")">Refund Initiated</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn  w-100 rounded-0 " style="background: #1a2035; color: #fff"
+                                @((ViewBag.IsOrderLocked as bool? ?? false) ? "disabled" : "")>
+                                    <i class="bi bi-check-circle me-1"></i> Update Payment
+                                </button>
+                            </form>
+                        </div>
+
+
+
+
+
+
+                        <div class="col-md-4 mb-4">
+                            <h6 class="section-header fw-bold"><i class="bi bi-x-circle me-2"></i> Cancel Order</h6>
+                            <form asp-action="CancelOrder" asp-route-orderId="@Model.OrderId" method="post" class="card p-3">
+                                @Html.AntiForgeryToken()
+                                <p class="text-muted mb-3">
+                                    Cancel only if not dispatched. Current status:<span class="badge @GetStatusClass(Model.OrderStatus)">@Model.OrderStatus</span>
+                                </p>
+                                <button type="submit" class="btn  w-100 rounded-0 " style="background: #1a2035; color: #fff"
+                                        @(Model.DispatchedDate.HasValue || (ViewBag.IsOrderLocked as bool? ?? false) ? "disabled" : ""))>
+                                    <i class="bi bi-x-circle me-1"></i> Cancel Order
+                                </button>
+                            </form>
+                        </div>
+                     
+
+
+                        <div class="col-md-4 mb-4">
+                            <h6 class="section-header fw-bold"><i class="bi bi-tag me-2"></i> Update Order Status</h6>
+                            <form asp-action="UpdateOrderStatus" asp-route-orderId="@Model.OrderId" method="post" class="card p-3">
+                                @Html.AntiForgeryToken()
+                                <div class="mb-3">
+                                    <label for="newStatus" class="form-label">Order Status</label>
+                                    <select class="form-select" id="newStatus" name="newStatus" required @((ViewBag.IsOrderLocked as bool? ?? false) ? "disabled" : "")>
+                                        <option value="Pending" selected="@(Model.OrderStatus == "Pending")">Pending</option>
+                                        <option value="Processing" selected="@(Model.OrderStatus == "Processing")">Processing</option>
+                                        <option value="ReadyToDispatch" selected="@(Model.OrderStatus == "ReadyToDispatch")">Ready to Dispatch</option>
+                                        <option value="Dispatched" selected="@(Model.OrderStatus == "Dispatched")">Dispatched</option>
+                                        <option value="Delivered" selected="@(Model.OrderStatus == "Delivered")">Delivered</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn  w-100 rounded-0 " style="background: #1a2035; color: #fff"
+                                @((ViewBag.IsOrderLocked as bool? ?? false) ? "disabled" : "")>
+                                    <i class="bi bi-check-circle me-1"></i> Update Status
+                                </button>
+                            </form>
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <div class="col-md-4 mb-4">
+                            <h6 class="section-header fw-bold"><i class="bi bi-check-circle me-2"></i> Mark Delivered</h6>
+                            <form asp-action="MarkDelivered" asp-route-orderId="@Model.OrderId" method="post" class="card p-3">
+                                @Html.AntiForgeryToken()
+                                <p class="text-muted mb-3">
+                                    Mark order as delivered after dispatch. Current status:<span class="badge @GetStatusClass(Model.OrderStatus)">@Model.OrderStatus</span>
+                                </p>
+                                <button type="submit" class="btn  w-100 rounded-0 " style="background: #1a2035; color: #fff"
+                                        @(Model.OrderStatus != "Dispatched" || Model.DeliveryDate.HasValue || (ViewBag.IsOrderLocked as bool? ?? false) ? "disabled" : ""))>
+                                    <i class="bi bi-check-circle me-1"></i> Mark Delivered
+                                </button>
+                            </form>
+                        </div>
+                       
+
+                        <div class="col-md-4 mb-4">
+        <h6 class="section-header fw-bold"><i class="bi bi-truck me-2"></i> Dispatch Order</h6>
+        <form asp-action="DispatchOrder" asp-route-orderId="@Model.OrderId" method="post" class="card p-3">
+            @Html.AntiForgeryToken()
+            <p class="text-muted mb-3">
+                Dispatch only if payment is cleared or COD. Current status:<span class="badge @GetStatusClass(Model.PaymentStatus)">@Model.PaymentStatus</span>
+            </p>
+                                <button type="submit" class="btn  w-100 rounded-0 " style="background: #1a2035; color: #fff"
+                                        @(Model.DispatchedDate.HasValue || Model.OrderStatus == "Delivered" || (ViewBag.IsOrderLocked as bool? ?? false) ? "disabled" : ""))>
+                <i class="bi bi-truck me-1"></i> Dispatch Now
+            </button>
+        </form>
+    </div>
+
+
+
+
+
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-0 p-3">
+                    <a asp-controller="Admin" asp-action="ManageOrders" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-2"></i> Back to Orders
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(function () {
+            document.querySelectorAll('.alert').forEach(alert => {
+                alert.classList.remove('show');
+                alert.classList.add('fade');
+            });
+        }, 5000);
+    });
+
+    function getStatusClass(status) {
+        switch (status.toLowerCase()) {
+            case 'pending': return 'badge-pending';
+            case 'cleared': return 'badge-cleared';
+            case 'paidondelivery': return 'badge-paidondelivery';
+            case 'delivered': return 'badge-delivered';
+            case 'canceled': return 'badge-canceled';
+            case 'Cancelled': return 'badge-canceled';
+            case 'approved': return 'badge-approved';
+            case 'rejected': return 'badge-rejected';
+            default: return 'badge-secondary';
+        }
+    }
+</script>
+
+@functions {
+    public string GetStatusClass(string status)
+    {
+        return status.ToLower() switch
+        {
+            "pending" => "badge-pending",
+            "cleared" => "badge-cleared",
+            "paidondelivery" => "badge-paidondelivery",
+            "delivered" => "badge-delivered",
+            "canceled" => "badge-canceled",
+            "Cancelled" => "badge-canceled",
+            "approved" => "badge-approved",
+            "rejected" => "badge-rejected",
+            _ => "badge-secondary"
+        };
+    }
+}

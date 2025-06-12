@@ -1,0 +1,48 @@
+﻿@model IEnumerable<User>
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container py-5">
+    <h2 class="text-center mb-4 fw-bold" style="color: #1a2035;">Register Users</h2>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle text-center shadow">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Id</th>
+                        <th>User Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        
+                        <th>Registered On</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var users in Model)
+                    {
+                        <tr>
+                            <td>@users.UserId</td>
+                            <td>@users.UserName</td>
+                            <td>@users.UserEmail</td>
+                            <td>@users.PhoneNumber</td>
+                            <td>@users.Address</td>
+                            <td>@users.RegistrationDate</td>
+
+                          
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center">
+            <h4>No Users records found.</h4>
+        </div>
+    }
+</div>

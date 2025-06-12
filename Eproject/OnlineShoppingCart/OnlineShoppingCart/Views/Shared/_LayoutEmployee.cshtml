@@ -1,0 +1,341 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>ARTS ADMIN DASHBOARD</title>
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+    <link rel="icon" href="" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="~/frontassets/img/favicon.png" rel="icon">
+
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="~/assets/css/bsmini.css" />
+    <link rel="stylesheet" href="~/assets/css/adminplugin.css" />
+    <link rel="stylesheet" href="~/assets/css/admin.css" />
+
+    <style>
+        .badge-pending {
+         
+            color: #ffc107;
+        }
+
+        .badge-cleared {
+           
+            color: #28a745;
+        }
+
+        .badge-readytodispatch {
+          
+            color: #007bff;
+        }
+
+        .badge-dispatched {
+           
+            color: #17a2b8;
+        }
+
+        .badge-ready {
+            color: #000000
+        }
+
+       .badge-delivered {
+            color: #28a745
+        }
+
+        .badge-paid{
+            color: dimgray;
+        }
+        </style>
+</head>
+
+<body>
+
+
+
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <div class="sidebar" data-background-color="dark">
+            <div class="sidebar-logo">
+                <!-- Logo Header -->
+                <div class="logo-header" data-background-color="dark">
+                    <a asp-controller="Employee" asp-action="ManageOrders" class="logo">
+                        <h5 style="    color: #6861ce;position: relative; top: 10px;">
+                            <img src="~/frontassets/img/adminlogo.png" style="    height: 30px; position: relative;  top: -6px;" />
+                            ArtStore
+                        </h5>
+                    </a>
+                    <div class="nav-toggle">
+                        <button class="btn btn-toggle toggle-sidebar">
+                            <i class="gg-menu-right"></i>
+                        </button>
+                        <button class="btn btn-toggle sidenav-toggler">
+                            <i class="gg-menu-left"></i>
+                        </button>
+                    </div>
+                    <button class="topbar-toggler more">
+                        <i class="gg-more-vertical-alt"></i>
+                    </button>
+                </div>
+                <!-- End Logo Header -->
+            </div>
+            <div class="sidebar-wrapper scrollbar scrollbar-inner">
+                <div class="sidebar-content">
+                    @{
+                        var currentAction = ViewContext.RouteData.Values["action"].ToString();
+                        var currentController = ViewContext.RouteData.Values["controller"].ToString();
+                    }
+                    <ul class="nav nav-secondary">
+                        
+
+                        <li class="nav-item @(currentAction == "ManageOrders" && currentController == "Employee" ? "active" : "")">
+                            <a asp-action="ManageOrders" asp-controller="Employee">
+                                <i class="fas fa-shopping-bag"></i><p>ManageOrders</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item  @(currentAction == "DeliveryReports" && currentController == "Employee" ? "active" : "")">
+                            <a asp-action="DeliveryReports" asp-controller="Employee">
+                                <i class="fas fa-clipboard-list"></i><p>DeliveryReports</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item @(currentAction == "UpdateProfile" && currentController == "Employee" ? "active" : "")">
+                            <a asp-action="UpdateProfile" asp-controller="Employee">
+                                <i class="
+             fas fa-user-alt"></i><p>UpdateProfile</p>
+                            </a>
+                        </li>
+
+
+
+
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- End Sidebar -->
+
+        <div class="main-panel">
+            <div class="main-header">
+                <div class="main-header-logo">
+                    <!-- Logo Header -->
+                    <div class="logo-header" data-background-color="dark">
+                        <a asp-controller="Employee" asp-action="ManageOrders" class="logo">
+                            <h5 style="    color: #6861ce;position: relative; top: 10px;">
+                                <img src="~/frontassets/img/adminlogo.png" style="    height: 30px; position: relative;  top: -6px;" />
+                                ArtStore
+                            </h5>
+                        </a>
+                        <div class="nav-toggle">
+                            <button class="btn btn-toggle toggle-sidebar">
+                                <i class="gg-menu-right"></i>
+                            </button>
+                            <button class="btn btn-toggle sidenav-toggler">
+                                <i class="gg-menu-left"></i>
+                            </button>
+                        </div>
+                        <button class="topbar-toggler more">
+                            <i class="gg-more-vertical-alt"></i>
+                        </button>
+                    </div>
+                    <!-- End Logo Header -->
+                </div>
+                <!-- Navbar Header -->
+                <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+                    <div class="container-fluid">
+                        <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+
+                        </nav>
+
+                        @{
+                            var userName = Context.Session.GetString("UserName");
+                            var userImage = Context.Session.GetString("UserImagePath") ?? "~/frontassets/img/person/profile.png";
+                            var isLoggedIn = Context.Session.GetInt32("UserId") != null;
+                        }
+                        <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+
+                            <li class="nav-item topbar-user dropdown hidden-caret">
+                                <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
+                                    <div class="avatar-sm">
+                                        <img src="@Url.Content(userImage)" alt="..." class="avatar-img rounded-circle" />
+                                    </div>
+                                    <span class="profile-username">
+                                       
+                                        <span class="fw-bold">@(!string.IsNullOrEmpty(userName) ? userName : "Guest")</span>
+                                    </span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-user animated fadeIn">
+                                    <div class="dropdown-user-scroll scrollbar-outer">
+                                        @if (isLoggedIn)
+                                        {
+                                        <li>
+                                            <div class="user-box">
+                                                <div class="avatar-lg">
+                                                    <img src="@Url.Content(userImage)" alt="image profile" class="avatar-img rounded" />
+                                                </div>
+                                                <div class="u-text">
+                                                    <h4>@userName</h4>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" asp-action="UpdateProfile" asp-controller="Employee" style="background: none; color: #000000;">Update profile</a>
+                                            <div class="dropdown-divider"></div>
+
+
+                                            <form asp-controller="Account" asp-action="Logout" method="post" style="margin: 0; padding: 0;">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="dropdown-item" style="background: none; color: #000000; width: 100%; text-align: left; padding: 0.375rem 1rem;" onclick="return confirmAdminLogout();">
+                                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                                </button>
+                                            </form>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="@Url.Action("Login", "Account")">Login</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="@Url.Action("Register", "Account")">Register</a>
+                                        </li>
+                                    }
+                    </div>
+                    </ul>
+                    </li>
+                    </ul>
+
+            </div>
+            </nav>
+            <!-- End Navbar -->
+        </div>
+
+
+        <!-- RENDER BODY AREA START -->
+
+
+
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+
+
+
+
+
+
+        <!-- RENDER BODY AREA END -->
+
+
+
+
+
+
+
+
+    </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script src="~/assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="~/assets/js/core/popper.min.js"></script>
+    <script src="~/assets/js/core/bootstrap.min.js"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="~/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+    @* <!-- Chart JS -->
+    <script src="~/assets/js/plugin/chart.js/chart.min.js"></script> *@
+
+    <!-- jQuery Sparkline -->
+    <script src="~/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+    @* <!-- Chart Circle -->
+    <script src="~/assets/js/plugin/chart-circle/circles.min.js"></script> *@
+
+    <!-- Datatables -->
+    <script src="~/assets/js/plugin/datatables/datatables.min.js"></script>
+
+    <!-- Bootstrap Notify -->
+    <script src="~/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+
+    @* <!-- jQuery Vector Maps -->
+    <script src="~/assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+    <script src="~/assets/js/plugin/jsvectormap/world.js"></script> *@
+
+    <!-- Sweet Alert -->
+    <script src="~/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+    <!-- Kaiadmin JS -->
+    <script src="~/assets/js/kaiadmin.min.js"></script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.nav-item > a, .nav-collapse > li > a');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (event) {
+                    document.querySelectorAll('.nav-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+
+                    const parentNavItem = link.closest('.nav-item');
+                    if (parentNavItem) {
+                        parentNavItem.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+            function confirmLogout() {
+            // Optional: Confirmation dialog
+            return confirm('Are you sure you want to logout?');
+        }
+
+        // Browser back button handle karna
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                // Page cache se load hua hai, reload karna
+                window.location.reload();
+            }
+        });
+
+        // History manipulation to prevent back button issues
+        if (window.history && window.history.pushState) {
+            window.history.pushState('forward', null, window.location.href);
+            window.addEventListener('popstate', function() {
+                window.history.pushState('forward', null, window.location.href);
+            });
+        }
+    </script>
+
+
+</body>
+
+</html>

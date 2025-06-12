@@ -1,0 +1,78 @@
+﻿@model ProductViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card shadow p-4" style="width: 100%; max-width: 400px; border-radius: 20px;">
+        <h2 class="text-center mb-1 text-dark fw-bold" style="color: #7B1E57;">Edit Product</h2>
+
+        <form method="post" enctype="multipart/form-data" asp-action="editProduct">
+
+            <input type="hidden" asp-for="productList.ProductId" />
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Product Name</label>
+                <input asp-for="productList.ProductName" type="text" class="form-control" placeholder="Product Name">
+                <span asp-validation-for="productList.ProductName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Description</label>
+                <input asp-for="productList.Description" type="text" class="form-control" placeholder="Description">
+                <span asp-validation-for="productList.Description" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Product Image</label>
+                <input asp-for="productList.ImagePath" type="file" name="prodImg" class="form-control">
+                <span asp-validation-for="productList.ImagePath" class="text-danger"></span>
+
+                @if (!string.IsNullOrEmpty(Model.productList.ImagePath))
+                {
+                    <div class="mt-2">
+                        <img src="~/ProdImages/@Model.productList.ImagePath" width="100" height="100" class="rounded" />
+                        <p class="text-muted">Current Image</p>
+                    </div>
+                }
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Price</label>
+                <input asp-for="productList.Price" type="number" class="form-control" placeholder="Price">
+                <span asp-validation-for="productList.Price" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Category</label>
+                <select asp-for="productList.CategoryId" class="form-control">
+                    <option value="" disabled>Select Product Category</option>
+                    @foreach (var list in Model.categoryList)
+                    {
+                        <option value="@list.CategoryId" selected="@(list.CategoryId == Model.productList.CategoryId)">
+                            @list.CategoryName
+                        </option>
+                    }
+                </select>
+                <span asp-validation-for="productList.CategoryId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Stock Quantity</label>
+                <input asp-for="productList.StockQuantity" type="number" class="form-control" placeholder="Stock Quantity">
+                <span asp-validation-for="productList.StockQuantity" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Warranty Period (Days)</label>
+                <input asp-for="productList.WarrantyPeriodDays" type="number" class="form-control" placeholder="Warranty Period Days">
+                <span asp-validation-for="productList.WarrantyPeriodDays" class="text-danger"></span>
+            </div>
+
+            <div class="d-grid mb-3">
+                <button type="submit" class="btn text-white" style="background-color: #7B1E57;">Update Product</button>
+            </div>
+        </form>
+    </div>
+</div>

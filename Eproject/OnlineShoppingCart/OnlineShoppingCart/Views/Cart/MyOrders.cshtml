@@ -1,0 +1,162 @@
+﻿@model List<OnlineShoppingCart.Models.Order>
+
+<main class="main">
+    <!-- Page Title -->
+    <div class="page-title">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                   
+                    <li class="current">MyOrders</li>
+                </ol>
+            </nav>
+            <h1>My Order List</h1>
+        </div>
+    </div>
+
+    <!-- My Orders Section -->
+    <section class="my-orders section" data-aos="fade-up" data-aos-delay="100">
+        <div class="container">
+            <!-- Success/Error Messages -->
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle me-2"></i> @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle me-2"></i> @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            <!-- Orders Table -->
+            @if (Model.Any())
+            {
+                <div class="card shadow-sm">
+                    <div class="card-header text-white" style="background:#232323">
+                        <h5 class="mb-0 text-white"> Your Orders (@Model.Count)</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Order Number</th>
+                                        <th>Date</th>
+                                        <th>Total</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var order in Model)
+                                    {
+                                        <tr>
+                                            <td>@order.OrderNumber</td>
+                                            <td>@order.OrderDate.ToString("dd MMM yyyy")</td>
+                                            <td>Rs @order.Total.ToString("N2")</td>
+                                            <td>
+                                                <span class="badge @GetStatusClass(order.OrderStatus) fw-bold">
+                                                    @order.OrderStatus
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <a asp-action="OrderDetails" asp-route-orderId="@order.OrderId"
+                                                   class="btn btn-sm btn-dark">
+                                                     View Details
+                                                </a>
+                                                @if (!order.DispatchedDate.HasValue && order.OrderStatus != "Canceled")
+                                                {
+                                                    <form asp-action="CancelOrder" asp-route-orderId="@order.OrderId"
+                                                          method="post"
+                                                          class="d-inline cancel-order-form"
+                                                          onsubmit="return confirm('Are you sure you want to cancel this order?');">
+                                                        @Html.AntiForgeryToken()
+                                                        <button type="submit" class="btn btn-sm btn-danger">
+                                                            <i class="bi bi-x-circle me-1"></i> Cancel
+                                                        </button>
+                                                    </form>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-0 p-3">
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+                           Continue Shopping
+                        </a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="bi bi-cart-x text-muted" style="font-size: 3rem;"></i>
+                        <h5 class="mt-3">No Orders Found</h5>
+                        <p class="text-muted">You haven't placed any orders yet. Start shopping now!</p>
+                        <a asp-controller="Home" asp-action="Index" class="btn" style="background : #E53888; color: #fff;">
+                             Shop Now
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+</main>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Close alerts after 5 seconds
+        setTimeout(function () {
+            document.querySelectorAll('.alert').forEach(alert => {
+                alert.classList.remove('show');
+                alert.classList.add('fade');
+            });
+        }, 5000);
+
+        // Handle cancel order confirmation
+        document.querySelectorAll('.cancel-order-form').forEach(form => {
+            form.addEventListener('submit', function (e) {
+                if (!confirm('Are you sure you want to cancel this order?')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    });
+
+    // Helper function to get status badge class
+    function getStatusClass(status) {
+        switch (status.toLowerCase()) {
+            case 'pending': return 'badge-pending';
+            case 'dispatched': return 'badge-dispatched';
+            case 'delivered': return 'badge-delivered';
+            case 'canceled': return 'badge-canceled';
+            default: return 'badge-secondary';
+        }
+    }
+</script>
+
+@functions {
+    public string GetStatusClass(string status)
+    {
+        return status.ToLower() switch
+        {
+            "pending" => "badge-pending",
+            "dispatched" => "badge-dispatched",
+            "delivered" => "badge-delivered",
+            "canceled" => "badge-canceled",
+            _ => "badge-secondary"
+        };
+    }
+}

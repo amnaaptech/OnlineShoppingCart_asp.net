@@ -1,0 +1,49 @@
+﻿@model IEnumerable<ContactU>
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container py-5">
+    <h2 class="text-center mb-4 fw-bold" style="color: #1a2035;">Contact Records</h2>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle text-center shadow">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Contact Name</th>
+                        <th>Contact Email</th>
+                        <th>Subject</th>
+                        <th>Message</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var contact in Model)
+                    {
+                        <tr>
+                            <td>@contact.ContactName</td>
+                            <td>@contact.ContactEmail</td>
+                            <td>@contact.ContactSubject</td>
+                            <td>@contact.ContactMessage</td>
+                            <td>
+                                <a asp-action="DeleteContact" class="btn btn-dark btn-sm"
+                                   asp-controller="Admin" asp-route-id="@contact.ContactId"
+                                   onclick="return confirm('Are you sure you want to delete this contact?')">
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center">
+            <h4>No contact records found.</h4>
+        </div>
+    }
+</div>

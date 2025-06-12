@@ -1,0 +1,48 @@
+﻿@model OnlineShoppingCart.Models.LoginViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutAccount.cshtml";
+}
+
+<main class="main">
+    <section id="login" class="login section">
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <div class="row justify-content-center">
+                <div class="col-lg-5 col-md-8" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="login-form-wrapper">
+                        <div class="login-header text-center">
+                            <h2>Login</h2>
+                            <p>Welcome back! Please enter your details</p>
+                        </div>
+
+                        <form asp-action="Login" method="post">
+                            @Html.AntiForgeryToken()
+
+                            <div class="mb-4">
+                                <label class="form-label">Email</label>
+                                <input asp-for="UserEmail" class="form-control" placeholder="Enter your email" />
+                                <span asp-validation-for="UserEmail" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Password</label>
+                                <input asp-for="UserPassword" type="password" class="form-control" placeholder="Enter your password" />
+                                <span asp-validation-for="UserPassword" class="text-danger"></span>
+                            </div>
+
+                            <div class="d-grid gap-2 mb-4">
+                                <button type="submit" class="btn btn-primary">Sign in</button>
+                            </div>
+
+                            <div class="signup-link text-center">
+                                <span>Don't have an account?</span>
+                                <a asp-action="Register" asp-controller="Account">Sign up for free</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+

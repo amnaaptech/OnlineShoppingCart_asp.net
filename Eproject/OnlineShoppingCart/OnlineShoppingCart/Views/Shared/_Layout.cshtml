@@ -1,0 +1,911 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>ARTS</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <!-- Favicons -->
+    <link href="~/frontassets/img/favicon.png" rel="icon">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="~/frontassets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/frontassets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/frontassets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="~/frontassets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="~/frontassets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="~/frontassets/vendor/drift-zoom/drift-basic.css" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="~/frontassets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css">
+    <link href="assets/css/main.css" rel="stylesheet">
+
+    <style>
+        /* Order Summary */
+        .order-summary {
+            background: #f8f9fa;
+            padding: 60px 0;
+        }
+
+        .page-title {
+            background: #000000dc;
+            color: #ffffff !important;
+            padding: 48px;
+            margin-bottom: 0;
+        }
+
+        .breadcrumbs ol {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumbs li {
+            margin-right: -18px;
+        }
+
+            .breadcrumbs li:after {
+                content: '/';
+                margin-left: 5px;
+                color: #E53888;
+            }
+
+        .page-title h1 {
+            color: #ffffff !important;
+        }
+
+        .product-category {
+            background: #E53888;
+            color: white!important ;
+            padding: 4px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .contact-2 {
+            padding-top: 5px;
+        }
+
+            .contact-2 .info-item + .info-item {
+                margin-top: 40px;
+            }
+
+            .contact-2 .info-item i {
+                color: var(--contrast-color);
+                background: var(--accent-color);
+                font-size: 20px;
+                width: 44px;
+                height: 44px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 4px;
+                transition: all 0.3s ease-in-out;
+                margin-right: 15px;
+            }
+
+            .contact-2 .info-item h3 {
+                padding: 0;
+                font-size: 18px;
+                font-weight: 700;
+                margin-bottom: 5px;
+            }
+
+            .contact-2 .info-item p {
+                padding: 0;
+                margin-bottom: 0;
+                font-size: 14px;
+            }
+
+            .contact-2 .contact-email-form {
+                height: 100%;
+            }
+
+                .contact-2 .contact-email-form input[type=text],
+                .contact-2 .contact-email-form input[type=email],
+                .contact-2 .contact-email-form textarea {
+                    font-size: 14px;
+                    padding: 10px 15px;
+                    box-shadow: none;
+                    border-radius: 0;
+                    color: var(--default-color);
+                    background-color: color-mix(in srgb, var(--background-color), transparent 50%);
+                    border-color: color-mix(in srgb, var(--default-color), transparent 80%);
+                }
+
+                    .contact-2 .contact-email-form input[type=text]:focus,
+                    .contact-2 .contact-email-form input[type=email]:focus,
+                    .contact-2 .contact-email-form textarea:focus {
+                border-color: var(--accent-color);
+            }
+
+            .contact-2 .contact-email-form input[type=text]::placeholder,
+            .contact-2 .contact-email-form input[type=email]::placeholder,
+            .contact-2 .contact-email-form textarea::placeholder {
+                color: color-mix(in srgb, var(--default-color), transparent 70%);
+            }
+
+            .contact-2 .contact-email-form button[type=submit] {
+                color: var(--contrast-color);
+                background: var(--accent-color);
+                border: 0;
+                padding: 10px 30px;
+                transition: 0.4s;
+                border-radius: 4px;
+            }
+
+                .contact-2 .contact-email-form button[type=submit]:hover {
+                    background: color-mix(in srgb, var(--accent-color), transparent 20%);
+                }
+
+
+
+ 
+    .card {
+        border: none;
+        border-radius: 0 !important;
+        overflow: hidden;
+        position: relative;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+    }
+
+        .card {
+            border: none;
+            border-radius: 0.375rem;
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card-img-overlay {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            z-index: 10;
+        }
+
+        .card:hover .card-img-overlay {
+            opacity: 1;
+        }
+
+        .icon-btn {
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            position: relative;
+            border: none;
+            padding: 0;
+            color: #fff; /* yellow-400 */
+            padding: 10px;
+            background-color: #E53888;
+            border: none;
+        }
+
+            .icon-btn:hover{
+                background-color: #fff;
+            }
+           
+      
+
+    .card-title {
+        font-weight: 600;
+        font-size: 1.125rem;
+        margin-bottom: 0.25rem;
+    }
+
+        product-price {
+        font-size: 13px;
+        margin: 0;
+    }
+
+       
+
+    .bg-warning {
+        background-color: #f7f7f7 !important;
+    }
+
+        .best-sellers .product-price {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--accent-color);
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .header .main-header .logo img {
+            /* max-height: 32px; */
+            /* margin-right: 22px; */
+            position: relative;
+            top: -9px;
+          
+            height: 45px;
+        }
+        @@media (max-width: 425px) {
+            .header .main-header .logo img{ height: 35px;}
+        }
+
+        @@media (max-width: 375px) {
+            .header .main-header .logo img {
+                height: 30px;
+            }
+        }
+
+        @@media (max-width: 350px) {
+            .header .main-header .logo img {
+                height: 24px;
+            }
+
+            .profile-username {
+                margin-left: 8px;
+                font-size: 12px;
+            }
+
+            .avatar-sm {
+                width: 1.75rem;
+                height: 1.75rem 28px;
+            }
+        }
+
+        .header .main-header .header-actions {
+            gap: 0px;
+        }
+        /* //////////////////////////////////////////////////// ===========================================*/
+ 
+        .payment-details {
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            padding: 20px;
+            margin-top: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .payment-details h6 {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Payment Methods Section */
+        .payment-methods .card {
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .payment-methods .card-header {
+            background: #ffffff;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+            .payment-methods .card-header h6 {
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: #333;
+                margin: 0;
+            }
+
+        .payment-options {
+            padding: 15px 20px;
+        }
+
+            .payment-options .form-check {
+                margin-bottom: 15px;
+                padding: 10px;
+                border-radius: 5px;
+                transition: background 0.2s ease;
+            }
+
+                .payment-options .form-check:hover {
+                    background: #f1f3f5;
+                }
+
+            .payment-options .form-check-input {
+                margin-top: 2px;
+                cursor: pointer;
+            }
+
+            .payment-options .form-check-label {
+                cursor: pointer;
+                font-size: 0.95rem;
+                font-weight: 500;
+                color: #444;
+                display: flex;
+                align-items: center;
+            }
+
+                .payment-options .form-check-label i {
+                    font-size: 1.2rem;
+                    margin-right: 10px;
+                }
+
+                .payment-options .form-check-label small {
+                    font-size: 0.85rem;
+                    color: #6c757d;
+                    margin-left: 34px; /* Aligns with the icon + input offset */
+                }
+
+        /* Payment Details Form Fields */
+        .payment-details .form-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .payment-details .form-control {
+            border-radius: 6px;
+            border: 1px solid #ced4da;
+            padding: 10px;
+            font-size: 0.9rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .shipping-section .form-control:focus {
+                border-color: #E53888;
+                box-shadow: 0 0 0 0.25rem color-mix(in srgb, #E53888, transparent 80%);
+                outline: none;
+            }
+
+        .shipping-section .invalid-feedback {
+            font-size: 0.8rem;
+            color: #dc3545;
+            margin-top: 5px;
+        }
+
+        .shipping-section .row {
+            margin-left: -10px;
+            margin-right: -10px;
+        }
+
+            .payment-details .row > div {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+        /* Responsive Adjustments */
+        @@media (max-width: 767.98px) {
+            .payment-options .form-check
+
+        {
+            padding: 10px 15px;
+        }
+
+        .payment-details {
+            padding: 15px;
+        }
+
+            .payment-details .form-label {
+                font-size: 0.85rem;
+            }
+
+            .payment-details .form-control {
+                font-size: 0.85rem;
+                padding: 8px;
+            }
+
+        }
+        /* ///badge//// */
+        .badge-pending {
+            background:none;
+            color: #ffc107;
+        }
+
+        .badge-cleared {
+            background: none;
+            color: #28a745;
+        }
+
+
+
+        .badge-returned {
+            background: none;
+            color: #000000;
+        }
+
+        .badge-paidondelivery {
+            background: none;
+            color: #17a2b8;
+        }
+
+        .badge-delivered {
+            background: none;
+            color: #28a745;
+        }
+
+        .badge-canceled {
+            background: none;
+            color: red;
+        }
+
+        .badge-refunded {
+            background: none;
+            color: #000000;
+        }
+
+        .badge-ready {
+            background: none;
+            color: #007bff;
+        }
+
+        .badge-secondary{
+            color: #232323;
+        }
+
+        .badge-dispatched
+      {
+            background-color: none;
+            color: #17a2b8;
+        }
+
+    </style>
+        
+
+
+
+
+
+
+
+
+    <!-- Add this CSS to your _Layout.cshtml or main CSS file -->
+
+
+
+</head>
+<body class="index-page">
+
+    <header id="header" class="header position-relative">
+
+
+        <!-- Main Header -->
+        <div class="main-header">
+            <div class="container-fluid container-xl">
+                <div class="d-flex py-3 align-items-center justify-content-between">
+
+                    <!-- Logo -->
+                    <a asp-controller="Home" asp-action="Index" class="logo d-flex align-items-center">
+
+                      <img src="~/frontassets/img/2.png" alt="logo">
+                        @* <h1 class="sitename">AR<span>TS</span></h1> *@
+                    </a>
+
+                    <!-- Search -->
+                    <form class="search-form desktop-search-form" method="get" action="/Home/AllProducts">
+                        <div class="input-group">
+                            <input type="text" name="searchQuery" class="form-control" placeholder="Search for products..." value="@ViewBag.SearchQuery">
+                            <button class="btn search-btn" type="submit">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Actions -->
+                    <div class="header-actions d-flex align-items-center justify-content-end">
+
+                        <!-- Mobile Search Toggle -->
+                        <button class="header-action-btn mobile-search-toggle d-xl-none" type="button" data-bs-toggle="collapse" data-bs-target="#mobileSearch" aria-expanded="false" aria-controls="mobileSearch">
+                            <i class="bi bi-search"></i>
+                        </button>
+
+
+
+                    
+
+                        <!-- Cart -->
+
+                        <a asp-controller="Cart" asp-action="Index" class="header-action-btn d-md-flex">
+                            <i class="bi bi-cart3"></i>
+                            <span class="badge" id="cartCount">
+                                @(Context.Session.GetInt32("CartCount") ?? 0)
+                            </span>
+                        </a>
+                        
+                        @* ACOOUNT *@
+                     
+                        @{
+                            var userName = Context.Session.GetString("UserName");
+                            var userImage = Context.Session.GetString("UserImagePath") ?? "~/frontassets/img/person/profile.png";
+                            var isLoggedIn = Context.Session.GetInt32("UserId") != null;
+                        }
+
+                        <div class="dropdown account-dropdown">
+                            <button class="header-action-btn" data-bs-toggle="dropdown">
+                                <a class="profile-pic">
+                                    <div class="avatar-sm">
+                                        <img src="@Url.Content(userImage)" alt="..." class="avatar-img rounded-circle" />
+                                    </div>
+                                    <span class="profile-username">
+                                        @if (isLoggedIn)
+                                        {
+                                            <span class="fw-bold">@userName</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="fw-bold">Guest</span>
+                                        }
+                                    </span>
+                                </a>
+                            </button>
+                            <div class="dropdown-menu">
+                                @if (isLoggedIn)
+                                {
+                                    <div class="dropdown-header">
+                                        <h6>Welcome to <span class="sitename">ARTS</span></h6>
+                                        <p class="mb-0">Access account &amp; manage orders</p>
+                                    </div>
+                                    <div class="dropdown-body">
+                                        <a class="dropdown-item d-flex align-items-center" asp-controller="Cart" asp-action="MyOrders">
+                                            <i class="bi bi-bag-check me-2"></i>
+                                            <span>My Orders</span>
+                                        </a>
+                                        <a class="dropdown-item d-flex align-items-center" asp-controller="Cart" asp-action="Index">
+                                            <i class="bi bi-cart-x me-2"></i>
+                                            <span>My Cart</span>
+                                        </a>
+                                        <a class="dropdown-item d-flex align-items-center" asp-action="UpdateProfile" asp-controller="Home">
+                                            <i class="bi bi-gear me-2"></i>
+                                            <span>Update profile</span>
+                                        </a>
+                                    </div>
+                                    <div class="dropdown-footer">
+                                        <!-- Form-based logout instead of direct link -->
+                                        <form asp-controller="Account" asp-action="Logout" method="post" style="margin: 0;">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-outline-danger w-100" onclick="return confirmLogout();">
+                                                Logout
+                                            </button>
+                                        </form>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="dropdown-footer">
+                                        <a href="@Url.Action("Login", "Account")" class="btn btn-primary w-100 mb-2">Log In</a>
+                                        <a href="@Url.Action("Register", "Account")" class="btn btn-outline-primary w-100">Register</a>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+
+
+
+                        <!-- Mobile Navigation Toggle -->
+                        <i class="mobile-nav-toggle d-xl-none bi bi-list me-0"></i>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="header-nav">
+            <div class="container-fluid container-xl position-relative">
+                <nav id="navmenu" class="navmenu">
+                    <ul>
+                        <li><a asp-controller="Home" asp-action="Index" class="">Home</a></li>
+                        <li><a asp-controller="Home" asp-action="AllProducts">Products</a></li>
+                        <li><a asp-controller="Cart" asp-action="Index">My Cart</a></li>
+                        
+                        <li><a asp-controller="Home" asp-action="Faqs">Faqs</a></li>
+                        <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+   
+
+        <!-- Mobile Search Form -->
+        <div class="collapse" id="mobileSearch">
+            <div class="container">
+              
+                <form class="search-form" method="get" action="/Home/AllProducts">
+                    <div class="input-group">
+                        <input type="text" name="searchQuery" class="form-control" placeholder="Search for products..." value="@ViewBag.SearchQuery">
+                        <button class="btn search-btn" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </header>
+
+
+    @*   RENDEER BODY AREA *@
+
+
+    @RenderBody()
+
+
+    @*   RENDEER BODY AREA *@
+
+
+
+
+
+    <footer id="footer" class="footer light-background">
+        <div class="footer-main">
+            <div class="container">
+                <div class="row gy-4">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-widget footer-about">
+                            <h4>About ArtStore</h4>
+                            <p>
+                                Welcome to our arts & gift shop!
+                                Discover creative, handcrafted treasures.
+                                Perfect gifts for every occasion.
+                                Where every item tells a story.
+                            </p>
+
+                          
+                        </div>
+                    </div>
+
+                  
+
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="footer-widget">
+                            <h4>Quick Links</h4>
+                            <ul class="footer-links">
+                                <li><a asp-controller="Home" asp-action="Index" >Home</a></li>
+                                <li><a asp-controller="Home" asp-action="AllProducts">Products</a></li>
+                                
+                                <li><a asp-controller="Home" asp-action="Faqs">Faq</a></li>
+                                <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-widget">
+                            <h4>Contact Information</h4>
+                            <div class="footer-contact">
+                                <div class="contact-item">
+                                    <i class="bi bi-geo-alt"></i>
+                                    <span>Karachi: 4th Floor, Mateen Shopping Galaxy, Gulshan-e-Iqbal.</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="bi bi-telephone"></i>
+                                    <span>+92 313 4409866</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="bi bi-envelope"></i>
+                                    <span>support@Arts.com</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="bi bi-clock"></i>
+                                    <span>Monday-Friday: 9am-6pm<br>Saturday: 10am-4pm<br>Sunday: Closed</span>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center p-3">
+            © <span id="currentYear"></span> Copyright:
+            <a class="" asp-controller="Home" asp-action="Index" style="color: #E53888; font-weight:800">ArtStore.com</a>
+        </div>
+    </footer>
+
+
+
+    <!-- Scroll Top -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Preloader -->
+    <div id="preloader"></div>
+
+    <!-- Vendor JS Files -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/frontassets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/frontassets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="~/frontassets/vendor/aos/aos.js"></script>
+    <script src="~/frontassets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+    <script src="~/frontassets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="~/frontassets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="~/frontassets/vendor/drift-zoom/Drift.min.js"></script>
+    <script src="~/frontassets/vendor/purecounter/purecounter_vanilla.js"></script>
+
+    <!-- Main JS File -->
+    <script src="~/frontassets/js/main.js"></script>
+
+
+    <!-- Add this JavaScript before closing </body> tag -->
+   
+ 
+    <script>
+                document.addEventListener('DOMContentLoaded', function () {
+            const links = document.querySelectorAll('.navmenu ul li a');
+            const currentPage = window.location.pathname.toLowerCase();
+
+            // Page load pe current link ko active karo
+            links.forEach(link => {
+                const linkPath = link.getAttribute('href').toLowerCase();
+                if (linkPath === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Click hone pe active class update karo
+            links.forEach(link => {
+                link.addEventListener('click', function () {
+                    links.forEach(l => l.classList.remove('active')); // Sab se active hatao
+                    this.classList.add('active'); // Clicked link pe active lagao
+                });
+            });
+        });
+ 
+  
+  
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Page load par cart count load karein (agar session mein nahi hai)
+            loadCartCount();
+
+            // Agar TempData mein CartUpdated flag hai to count update karein
+            @if (TempData["CartUpdated"] != null)
+            {
+                    <text>
+                    setTimeout(function() {
+                        loadCartCount()
+                    }, 100);
+                    </text>
+            }
+
+            // Add to cart form submit ke baad page reload hone par ye chalega
+            if (performance.navigation.type === performance.navigation.TYPE_BACK_FORWARD) {
+                loadCartCount();
+            }
+        });
+
+        // Cart count load karne ka simple function
+        function loadCartCount() {
+            fetch('@Url.Action("GetCartCount", "Cart")')
+                .then(response => response.json())
+                .then(count => {
+                    document.getElementById('cartCount').textContent = count;
+
+                    // Agar count 0 se zyada hai to badge visible karein
+                    var badge = document.getElementById('cartCount');
+                    if (count > 0) {
+                      
+                        badge.classList.add('badge-notification');
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.log('Error loading cart count:', error);
+                });
+        }
+
+        // Page visibility change par cart count update karein
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                loadCartCount();
+            }
+        });
+
+        // Storage event listener (agar multiple tabs open hain)
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'cartUpdated') {
+                loadCartCount();
+            }
+        });
+    </script>
+    <script>
+            function confirmLogout() {
+            // Optional: Confirmation dialog
+            return confirm('Are you sure you want to logout?');
+        }
+
+        // Browser back button handle karna
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                // Page cache se load hua hai, reload karna
+                window.location.reload();
+            }
+        });
+
+        // History manipulation to prevent back button issues
+        if (window.history && window.history.pushState) {
+            window.history.pushState('forward', null, window.location.href);
+            window.addEventListener('popstate', function() {
+                window.history.pushState('forward', null, window.location.href);
+            });
+        }
+
+          document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    </script>
+
+
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

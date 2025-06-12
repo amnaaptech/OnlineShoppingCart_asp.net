@@ -1,0 +1,144 @@
+﻿@model List<OnlineShoppingCart.Models.Order>
+
+@{
+    Layout = "~/Views/Shared/_LayoutEmployee.cshtml";
+}
+
+<main class="main">
+    <div class="page-title">
+        <div class="container">
+
+            <h2 class="text-center mb-4  mt-4" style="color: #1a2035; font-size:22px ; font-weight: 700">Filter Records</h2>
+        </div>
+    </div>
+
+    <section class="order-management section" data-aos="fade-up" data-aos-delay="100">
+        <div class="container">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle me-2"></i> @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle me-2"></i> @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <form asp-action="ManageOrders" method="get" class="row g-3">
+                        <div class="col-md-6">
+                            <label for="searchOrderNumber" class="form-label">Order Number</label>
+                            <input type="text" class="form-control" id="searchOrderNumber" name="searchOrderNumber" value="@ViewBag.SearchOrderNumber" placeholder="Enter order number">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="orderStatus" class="form-label">Order Status</label>
+                            <select class="form-select" id="orderStatus" name="orderStatus">
+                                <option value="">All</option>
+                                <option value="ReadyToDispatch" selected="@(ViewBag.OrderStatus == "ReadyToDispatch")">Ready to Dispatch</option>
+                                <option value="Dispatched" selected="@(ViewBag.OrderStatus == "Dispatched")">Dispatched</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-dark w-100">
+                                <i class="bi bi-search me-1"></i> Filter
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header  text-white" style="background: #1a2035">
+                    <h5 class="mb-0"><i class="bi bi-receipt me-2"></i> All Orders List</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Order #</th>
+                                        <th>Customer</th>
+                                        <th>Order Date</th>
+                                        <th>Payment Status</th>
+                                        <th>Order Status</th>
+                                        <th>Total</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var order in Model)
+                                    {
+                                        <tr>
+                                            <td>@order.OrderNumber</td>
+                                            <td>@order.FullName</td>
+                                            <td>@order.OrderDate.ToString("dd MMM yyyy")</td>
+                                            <td><span class="badge @GetStatusClass(order.PaymentStatus)">@order.PaymentStatus</span></td>
+                                            <td><span class="badge @GetStatusClass(order.OrderStatus)">@order.OrderStatus</span></td>
+                                            <td>Rs @order.Total.ToString("N2")</td>
+                                            <td>
+                                                <a asp-action="OrderDetails" asp-route-orderId="@order.OrderId" class="btn btn-sm btn-secondary">
+                                                    <i class="bi bi-eye me-1"></i> Details
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No orders found.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(function () {
+            document.querySelectorAll('.alert').forEach(alert => {
+                alert.classList.remove('show');
+                alert.classList.add('fade');
+            });
+        }, 5000);
+    });
+
+    function getStatusClass(status) {
+        switch (status.toLowerCase()) {
+            case 'pending': return 'badge-pending';
+            case 'cleared': return 'badge-cleared';
+            case 'paidondelivery': return 'badge-paid';
+            case 'readytodispatch': return 'badge-ready';
+            case 'dispatched': return 'badge-dispatched';
+            case 'delivered': return 'badge-delivered';
+            default: return 'badge-secondary';
+        }
+    }
+</script>
+
+@functions {
+    public string GetStatusClass(string status)
+    {
+        return status.ToLower() switch
+        {
+            "pending" => "badge-pending",
+            "cleared" => "badge-cleared",
+            "paidondelivery" => "badge-paid",
+            "readytodispatch" => "badge-ready",
+            "dispatched" => "badge-dispatched",
+            "delivered" => "badge-delivered",
+            _ => "badge-secondary"
+        };
+    }
+}

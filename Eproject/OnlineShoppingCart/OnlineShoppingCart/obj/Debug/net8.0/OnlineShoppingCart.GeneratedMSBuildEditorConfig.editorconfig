@@ -1,0 +1,217 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = OnlineShoppingCart
+build_property.RootNamespace = OnlineShoppingCart
+build_property.ProjectDir = C:\Users\USER\Downloads\Project\Eproject\OnlineShoppingCart\OnlineShoppingCart\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\USER\Downloads\Project\Eproject\OnlineShoppingCart\OnlineShoppingCart
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Admin/addCategory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cYWRkQ2F0ZWdvcnkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Admin/AddEmployee.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQWRkRW1wbG95ZWUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Admin/AddFAQ.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQWRkRkFRLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Admin/AddFAQCat.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQWRkRkFRQ2F0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Admin/addProducts.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cYWRkUHJvZHVjdHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Admin/CancelledReturnedOrders.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ2FuY2VsbGVkUmV0dXJuZWRPcmRlcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Admin/dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cZGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Admin/editCategory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cZWRpdENhdGVnb3J5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Admin/EditFAQ.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdEZBUS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Admin/editProduct.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cZWRpdFByb2R1Y3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Admin/EmployeesList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRW1wbG95ZWVzTGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Admin/ManageOrders.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTWFuYWdlT3JkZXJzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Admin/OrderDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cT3JkZXJEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Admin/RegisterUsers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUmVnaXN0ZXJVc2Vycy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Admin/ShowCategory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cU2hvd0NhdGVnb3J5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Admin/ShowContact.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cU2hvd0NvbnRhY3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Admin/ShowFAQ.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cU2hvd0ZBUS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Admin/ShowFAQCat.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cU2hvd0ZBUUNhdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Admin/ShowProducts.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cU2hvd1Byb2R1Y3RzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Admin/ShowReviews.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cU2hvd1Jldmlld3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Admin/UpdateFAQCat.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cVXBkYXRlRkFRQ2F0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Admin/UpdateProfile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cVXBkYXRlUHJvZmlsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Cart/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Cart/MyOrders.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxNeU9yZGVycy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Cart/OrderConfirmation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxPcmRlckNvbmZpcm1hdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Cart/OrderDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxPcmRlckRldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Cart/OrderSummary.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxPcmRlclN1bW1hcnkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Employee/DeliveryReports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVcRGVsaXZlcnlSZXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Employee/EmployeeDashBoard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVcRW1wbG95ZWVEYXNoQm9hcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Employee/ManageOrders.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVcTWFuYWdlT3JkZXJzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Employee/OrderDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVcT3JkZXJEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Employee/UpdateProfile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVcVXBkYXRlUHJvZmlsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Home/AllProducts.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBbGxQcm9kdWN0cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Home/Contact.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDb250YWN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Home/Faqs.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxGYXFzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Home/ProductList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcm9kdWN0TGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Home/SingleProduct.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTaW5nbGVQcm9kdWN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Home/UpdateProfile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxVcGRhdGVQcm9maWxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-qt1qxz9dho
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Shared/_LayoutAccount.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRBY2NvdW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = b-8g6yx83i7m
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Shared/_LayoutAdmin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRBZG1pbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = b-fmv9zb7rco
+
+[C:/Users/USER/Downloads/Project/Eproject/OnlineShoppingCart/OnlineShoppingCart/Views/Shared/_LayoutEmployee.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRFbXBsb3llZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = b-2rewhmei3s

@@ -1,0 +1,217 @@
+﻿@model OnlineShoppingCart.Models.CancelledReturnedOrdersViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<main class="main">
+<div class="page-title">
+    <div class="container">
+
+            <h2 class="text-center mb-4  mt-4" style="color: #1a2035; font-size:22px ; font-weight: 700">Cancelled and Returned Orders</h2>
+    </div>
+</div>
+  <section class="order-management section" data-aos="fade-up" data-aos-delay="100">
+        <div class="container">
+
+    <form method="get" class="mb-5">
+        <div class="input-group shadow-sm w-50 mx-auto">
+            <input type="text" name="searchOrderNumber" value="@Model.SearchOrderNumber" class="form-control" placeholder="Search by Order Number"/>
+            <button type="submit" class="btn btn-dark">Search</button>
+        </div>
+    </form>
+
+
+<!-- User Cancelled Orders -->
+    <div class="card shadow-sm">
+    <div class="card-header  text-white" style="background: #1a2035">
+        <h5 class="mb-0"><i class="bi bi-receipt me-2"></i> User Cancelled Order List</h5>
+    </div>
+     <div class="card-body">
+@if (Model.UserCancelledOrders.Any())
+{
+  <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Order #</th>
+                <th>Customer</th>
+                <th>Order Date</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.UserCancelledOrders)
+            {
+                <tr>
+                    <td>@order.OrderNumber</td>
+                    <td>@(order.FullName ?? "N/A")</td>
+                    <td>@order.OrderDate.ToString("dd-MM-yyyy")</td>
+                    <td style="color:red ; font-weight:600">@order.OrderStatus</td>
+                    <td>@order.Total</td>
+                    <td>
+                        <a href="@Url.Action("OrderDetails", new { orderId = order.OrderId })" class="btn btn-sm btn-dark">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+   
+}
+   
+else
+{
+        <p class="text-center text-muted fst-italic">No user-cancelled orders found.</p>
+
+}
+ </div>
+ </div>
+
+<!-- Admin Cancelled Orders -->
+    <div class="card shadow-sm">
+    <div class="card-header  text-white" style="background: #1a2035">
+        <h5 class="mb-0"><i class="bi bi-receipt me-2"></i> Admin Cancelled Order List</h5>
+    </div>
+     <div class="card-body">
+
+@if (Model.AdminCancelledOrders.Any())
+    {
+           <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Order #</th>
+                <th>Customer</th>
+                <th>Order Date</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.AdminCancelledOrders)
+            {
+                <tr>
+                    <td>@order.OrderNumber</td>
+                    <td>@(order.FullName ?? "N/A")</td>
+                    <td>@order.OrderDate.ToString("dd-MM-yyyy")</td>
+                    <td style="color:red ; font-weight:600">@order.OrderStatus</td>
+                    <td>@order.Total</td>
+                    <td>
+                        <a href="@Url.Action("OrderDetails", new { orderId = order.OrderId })" class="btn btn-sm btn-dark">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+     </div>
+}
+else
+{
+        <p class="text-center text-muted fst-italic">No user-cancelled orders found.</p>
+
+}
+ </div>
+ </div>
+
+<!-- Returned Orders -->
+       <div class="card shadow-sm">
+    <div class="card-header  text-white" style="background: #1a2035">
+        <h5 class="mb-0"><i class="bi bi-receipt me-2"></i> Returned Order List</h5>
+    </div>
+     <div class="card-body">
+
+@if (Model.ReturnedOrders.Any())
+{
+          <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Order #</th>
+                <th>Customer</th>
+                <th>Order Date</th>
+                <th>Status</th>
+                <th>Return Reason</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.ReturnedOrders)
+            {
+                <tr>
+                    <td>@order.OrderNumber</td>
+                    <td>@(order.FullName ?? "N/A")</td>
+                    <td>@order.OrderDate.ToString("dd-MM-yyyy")</td>
+                    <td style="color:#000000 ; font-weight:600">@order.OrderStatus</td>
+                    <td>@(order.ReturnReason ?? "N/A")</td>
+                    <td>@order.Total</td>
+                    <td>
+                        <a href="@Url.Action("OrderDetails", new { orderId = order.OrderId })" class="btn btn-sm btn-dark">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+}
+else
+{
+        <p class="text-center text-muted fst-italic">No user-cancelled orders found.</p>
+
+}
+
+ </div>
+ </div>
+<!-- Replacement Orders -->
+         <div class="card shadow-sm">
+    <div class="card-header  text-white" style="background: #1a2035">
+        <h5 class="mb-0"><i class="bi bi-receipt me-2"></i> Replacement Order List</h5>
+    </div>
+     <div class="card-body">
+
+@if (Model.ReplacementOrders.Any())
+{
+        <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Order #</th>
+                <th>Customer</th>
+                <th>Order Date</th>
+                <th>Replacement Status</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.ReplacementOrders)
+            {
+                <tr>
+                    <td>@order.OrderNumber</td>
+                    <td>@(order.FullName ?? "N/A")</td>
+                    <td>@order.OrderDate.ToString("dd-MM-yyyy")</td>
+                    <td style="color:#000000 ; font-weight:600">@(order.ReplacementStatus ?? "N/A")</td>
+                    <td>@order.Total</td>
+                    <td>
+                        <a href="@Url.Action("OrderDetails", new { orderId = order.OrderId })" class="btn btn-sm btn-dark">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+}
+else
+{
+        <p class="text-center text-muted fst-italic">No user-cancelled orders found.</p>
+
+}
+ </div>
+ </div>
+
+</div>
+</section>
+</main>

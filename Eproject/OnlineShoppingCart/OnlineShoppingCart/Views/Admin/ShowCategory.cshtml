@@ -1,0 +1,48 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@model IEnumerable<Category>
+
+<div class="container py-5">
+    <h2 class="text-center mb-4 fw-bold" style="color: #1a2035;">Category List</h2>
+    <a asp-controller="Admin" asp-action="addCategory" class="btn btn-dark mb-2">Add Category</a>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle text-center shadow">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Category Name</th>
+                    <th>category Image</th>
+                    <th>Description</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var category in Model)
+                {
+                    <tr>
+                        <td>@category.CategoryId</td>
+                        <td>@category.CategoryName</td>
+                        <td>
+                            <img src="~/categoryImages/@category.CategoryImage" width="100" height="100" />
+                        </td>
+                        <td>@category.Description</td>
+                        <td>
+                            <a asp-action="editCategory" class="btn btn-dark" asp-controller="Admin" asp-route-id="@category.CategoryId">Edit</a>
+
+                        </td>
+                        <td>
+                            <a asp-action="deleteCategory" class="btn btn-dark" asp-controller="Admin" asp-route-id="@category.CategoryId">Delete</a>
+
+                        </td>
+
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

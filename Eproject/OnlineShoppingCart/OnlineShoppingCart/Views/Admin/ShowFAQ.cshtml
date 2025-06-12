@@ -1,0 +1,56 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@model IEnumerable<Faqcategory>
+
+<!-- begin app-main -->
+@* 
+SHow Faqsss
+/// *@
+
+<div class="container py-5">
+    <h2 class="text-center mb-4 fw-bold" style="color: #1a2035;">Faqs</h2>
+    <a asp-controller="Admin" asp-action="AddFAQ" class="btn btn-dark mb-2">Add New Faq</a>
+     @foreach (var cat in Model.Where(c => c.Faqs != null && c.Faqs.Any()))
+        {
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle text-center shadow">
+                <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Question</th>
+                    <th>Answer</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+                <tbody>
+                    @{
+                        int i = 1;
+                    }
+                    @foreach (var faq in cat.Faqs)
+                    {
+                        <tr>
+                            <td>@i</td>
+                            <td>@faq.Fquestion</td>
+                            <td>@faq.Fanswer</td>
+                            <td>
+                                <a asp-action="EditFAQ" asp-route-id="@faq.Faqid" class="btn btn-dark btn-sm">Edit</a>
+
+                            </td>
+                            <td>
+
+                                <a asp-action="DeleteFAQ" class="btn btn-dark" asp-controller="Admin" asp-route-id="@faq.Faqid">Delete</a>
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                </tbody>
+        </table>
+    </div>
+    }
+</div>
+
+   
+

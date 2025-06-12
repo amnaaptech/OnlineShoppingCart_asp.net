@@ -1,0 +1,222 @@
+﻿@model List<OnlineShoppingCart.Models.Cart>
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+    var totalAmount = Model.Sum(c => c.Product.Price * c.Quantity);
+    var totalItems = Model.Sum(c => c.Quantity);
+}
+
+<main class="main">
+    <!-- Page Title -->
+    <div class="page-title light-background">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="current">Shopping Cart</li>
+                </ol>
+            </nav>
+            <h1>Shopping Cart</h1>
+        </div>
+    </div>
+
+    <!-- Cart Section -->
+    <section id="cart" class="cart section">
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <!-- TempData Messages -->
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+            @if (TempData["InfoMessage"] != null)
+            {
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    @TempData["InfoMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            @if (Model.Any())
+            {
+                <div class="row">
+                    <!-- Cart Items Column -->
+                    <div class="col-lg-8">
+                        <div class="cart-table-wrapper">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h3>Your Cart Items (@totalItems items)</h3>
+                                <form asp-action="ClearCart" method="post" style="display: inline;"
+                                      onsubmit="return confirm('Are you sure you want to clear your entire cart?')">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        <i class="bi bi-trash"></i> Clear Cart
+                                    </button>
+                                </form>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table cart-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Price</th>
+                                            <th>Quantity</th>
+                                            <th>Total</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <div class="cart-product-info">
+                                                        <div class="product-image">
+                                                            <img src="~/ProdImages/@item.Product.ImagePath"
+                                                                 alt="@item.Product.ProductName"
+                                                                 class="img-fluid" style="width: 80px; height: 80px; object-fit: cover;">
+                                                        </div>
+                                                        <div class="product-details ms-3">
+                                                            <h6 class="product-name">
+                                                                <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Product.ProductId">
+                                                                    @item.Product.ProductName
+                                                                </a>
+                                                            </h6>
+                                                            <small class="text-muted">@item.Product.Category.CategoryName</small>
+                                                            <br>
+                                                            <small class="text-muted">Added: @item.AddedDate.ToString("MMM dd, yyyy")</small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span class="price">Rs @item.Product.Price</span>
+                                                </td>
+                                                <td>
+                                                    <div class="quantity-controls">
+                                                        <form asp-action="UpdateQuantity" method="post" class="d-inline-flex align-items-center">
+                                                            <input type="hidden" name="cartId" value="@item.CartId" />
+                                                            <div class="quantity-selector">
+                                                                <button type="button" class="quantity-btn decrease-btn" onclick="decreaseQuantity(@item.CartId)">
+                                                                    <i class="bi bi-dash"></i>
+                                                                </button>
+                                                                <input type="number" name="quantity" value="@item.Quantity"
+                                                                       min="1" max="@item.Product.StockQuantity"
+                                                                       class="quantity-input" id="qty-@item.CartId"
+                                                                       onchange="updateQuantity(@item.CartId)">
+                                                                <button type="button" class="quantity-btn increase-btn" onclick="increaseQuantity(@item.CartId, @item.Product.StockQuantity)">
+                                                                    <i class="bi bi-plus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                        <small class="text-muted d-block">Max: @item.Product.StockQuantity</small>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span class="total-price">Rs @((item.Product.Price * item.Quantity).ToString("N2"))</span>
+                                                </td>
+                                                <td>
+                                                    <form asp-action="RemoveFromCart" method="post" style="display: inline;"
+                                                          onsubmit="return confirm('Are you sure you want to remove this item?')">
+                                                        <input type="hidden" name="cartId" value="@item.CartId" />
+                                                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cart Summary Column -->
+                    <div class="col-lg-4">
+                        <div class="cart-summary">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Order Summary</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="summary-item">
+                                        <span>Subtotal (@totalItems items):</span>
+                                        <span>Rs @totalAmount.ToString("N2")</span>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span>Shipping:</span>
+                                        <span>Rs 150.00</span>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span>Tax (5%):</span>
+                                        <span>Rs @((totalAmount * 0.05m).ToString("N2"))</span>
+                                    </div>
+                                    <hr>
+                                    <div class="summary-total">
+                                        <span><strong>Total:</strong></span>
+                                        <span><strong>Rs @((totalAmount + 150 + (totalAmount * 0.05m)).ToString("N2"))</strong></span>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <a asp-action="OrderSummary" class="btn btn-secondary w-100 mb-2">
+                                        <i class="bi bi-credit-card"></i> Proceed to Checkout
+                                    </a>
+                                    <a asp-controller="Home" asp-action="Index" class="btn  w-100" style="background : #E53888; color:#fff ">
+                                        <i class="bi bi-arrow-left"></i> Continue Shopping
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <!-- Empty Cart -->
+                <div class="empty-cart text-center">
+                    <div class="empty-cart-icon">
+                        <i class="bi bi-cart-x" style="font-size: 5rem; color: #ccc;"></i>
+                    </div>
+                    <h3 class="mt-4">Your cart is empty</h3>
+                    <p class="text-muted">Looks like you haven't added any items to your cart yet.</p>
+                    <a asp-controller="Home" asp-action="Index" class="btn  mt-3" style="background : #E53888; color: #fff;">
+                         Start Shopping
+                    </a>
+                </div>
+            }
+        </div>
+    </section>
+</main>
+
+
+<script>
+    function decreaseQuantity(cartId) {
+        const input = document.getElementById('qty-' + cartId);
+        if (input.value > 1) {
+            input.value = parseInt(input.value) - 1;
+            updateQuantity(cartId);
+        }
+    }
+
+    function increaseQuantity(cartId, maxStock) {
+        const input = document.getElementById('qty-' + cartId);
+        if (parseInt(input.value) < maxStock) {
+            input.value = parseInt(input.value) + 1;
+            updateQuantity(cartId);
+        }
+    }
+
+    function updateQuantity(cartId) {
+        const form = document.querySelector(`form input[name="cartId"][value="${cartId}"]`).closest('form');
+        form.submit();
+    }
+</script>

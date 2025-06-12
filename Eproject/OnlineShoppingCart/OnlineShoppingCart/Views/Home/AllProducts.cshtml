@@ -1,0 +1,88 @@
+﻿@model OnlineShoppingCart.Models.ProductViewModel
+
+
+<main class="main">
+    <!-- Page Title -->
+    <div class="page-title light-background">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="current">Products</li>
+                </ol>
+            </nav>
+            <h1>Product List</h1>
+        </div>
+    </div>
+
+    <!-- /Products Cards Section -->
+    <section id="best-sellers" class="best-sellers section">
+        <!-- Section Title -->
+        <div class="container section-title light-background" data-aos="fade-up">
+            <h2>Our Products</h2>
+            <p class="faq-description">Explore a wide range of gifts, cards, stationery, handbags, beauty picks, and more all in one place</p>
+        </div><!-- End Section Title -->
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+            @if (Model.ProductsToDisplay.Any())
+            {
+
+
+                <div class="row g-4 justify-content-center">
+
+
+
+                    <!-- Card 1 -->
+                    @foreach (var product in Model.ProductsToDisplay)
+                    {
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <div class="card">
+                                <img src="~/ProdImages/@product.ImagePath"
+                                     class=""
+                                     alt="@product.ProductName"
+                                     height="300"
+                                     style="object-fit: cover;" />
+                                <div class="card-img-overlay d-flex">
+                                    <a class="icon-btn" aria-label="View details" asp-action="singleProduct" asp-controller="Home" asp-route-id="@product.ProductId">
+                                        View Details
+                                    </a>
+
+
+
+                                </div>
+                                <div class="bg-warning px-3 py-3">
+
+                                    <h3 class="card-title text-black">@product.ProductName</h3>
+                                    <p class="product-price">@product.Price Rs</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            }
+            else
+            {
+                <div class="text-center">
+                    <p>No product found matching you serach</p>
+                </div>
+            }
+        </div>
+    </section>
+
+    <!-- /Products Cards Section -->
+
+
+
+
+
+
+
+
+
+
+
+
+</main>
+
+

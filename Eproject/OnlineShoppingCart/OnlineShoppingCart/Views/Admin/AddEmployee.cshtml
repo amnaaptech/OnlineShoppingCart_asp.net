@@ -1,0 +1,42 @@
+﻿@model OnlineShoppingCart.Models.AddEmployeeViewModel
+
+
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card shadow p-4" style="width: 100%; max-width: 400px; border-radius: 20px;">
+        <h2 class="text-center mb-1 text-dark fw-bold" style="color: #1a2035;">Add Employee</h2>
+
+
+        <form method="post" enctype="multipart/form-data" asp-action="AddEmployee">
+            <div class="mb-3">
+                <label class="form-label fw-bold">Employee Name</label>
+                <input asp-for="UserName" type="text" class="form-control">
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Employee Email</label>
+                <input asp-for="UserEmail" type="email" class="form-control">
+                <span asp-validation-for="UserEmail" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Password</label>
+                <input asp-for="UserPassword" type="password" class="form-control">
+                <span asp-validation-for="UserPassword" class="text-danger"></span>
+            </div>
+
+            <div class="d-grid mb-3">
+                <button type="submit" class="btn text-white" style="background-color: #1a2035;">Add Employee</button>
+            </div>
+
+
+
+
+        </form>
+    </div>
+</div>

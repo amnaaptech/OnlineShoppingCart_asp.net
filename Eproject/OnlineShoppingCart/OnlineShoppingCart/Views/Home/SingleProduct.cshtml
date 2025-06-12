@@ -1,0 +1,443 @@
+﻿@model OnlineShoppingCart.Models.ProductViewModel
+
+<main class="main">
+    <!-- Page Title -->
+    <div class="page-title light-background">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="current">Product Details</li>
+                </ol>
+            </nav>
+            <h1>Product Details</h1>
+        </div>
+    </div>
+
+    <!-- Product Details Section -->
+    <section id="product-details" class="product-details section">
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <!-- TempData Messages -->
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle"></i> @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle"></i> @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            <div class="row g-5">
+                <!-- Product Images Column -->
+                <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right" data-aos-delay="200">
+                    <div class="product-gallery">
+                        <!-- Main Image -->
+                        <div class="main-image-wrapper">
+                            <div class="image-zoom-container">
+                                <a href="~/ProdImages/@Model.productList.ImagePath">
+                                    <img src="~/ProdImages/@Model.productList.ImagePath" alt="Product Image" class="img-fluid main-image" />
+                                    <div class="zoom-overlay">
+                                        <i class="bi bi-zoom-in"></i>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Info Column -->
+                <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
+                    <div class="product-info-wrapper" id="product-info-sticky">
+                        <!-- Product Meta -->
+                        <div class="product-meta">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="product-category">@Model.productList.Category.CategoryName</span>
+                            </div>
+                            <h1 class="product-title">@Model.productList.ProductName</h1>
+                            @{
+                                var totalR = Model.Reviews.Count();
+                                var average = totalR > 0 ? Math.Round(Model.Reviews.Average(r => r.Rating), 1) : 0.0;
+                            }
+                            <div class="product-rating">
+                                <div class="stars">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        if (average >= i)
+                                        {
+                                            <i class="bi bi-star-fill"></i>
+                                        }
+                                        else if (average >= i - 0.5)
+                                        {
+                                            <i class="bi bi-star-half"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-star"></i>
+                                        }
+                                    }
+                                    <span class="rating-value">@average</span>
+                                </div>
+                                <a href="#reviews" class="rating-count">(@totalR reviews)</a>
+                            </div>
+                        </div>
+
+                        <!-- Product Price -->
+                        <div class="product-price-container">
+                            <div class="price-wrapper">
+                                <span class="current-price">Rs @Model.productList.Price</span>
+                            </div>
+                            <div class="stock-info">
+                                @if (Model.productList.StockQuantity > 0)
+                                {
+                                    <i class="bi bi-check-circle-fill text-success"></i>
+                                    <span class="text-success">In Stock</span>
+                                    <span class="stock-count">(@Model.productList.StockQuantity items available)</span>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-x-circle-fill text-danger"></i>
+                                    <span class="text-danger">Out of Stock</span>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Product Description -->
+                        <div class="product-short-description">
+                            <p>@Model.productList.Description</p>
+                        </div>
+
+                        <!-- Product Additional Info -->
+                        @if (Model.productList.WarrantyPeriodDays.HasValue)
+                        {
+                            <div class="product-warranty">
+                                <i class="bi bi-shield-check"></i>
+                                <span>Warranty: @Model.productList.WarrantyPeriodDays days</span>
+                            </div>
+                        }
+
+                        <!-- Add to Cart Form -->
+                        @if (Model.productList.StockQuantity > 0)
+                        {
+                            <form asp-controller="Cart" asp-action="AddToCart" method="post" class="add-to-cart-form">
+                                <input type="hidden" name="productId" value="@Model.productList.ProductId" />
+
+                                <!-- Product Options -->
+                                <div class="product-options">
+                                    <!-- Quantity Selector -->
+                                    <div class="option-group">
+                                        <h6 class="option-title">Quantity</h6>
+                                        <div class="quantity-selector">
+                                            @* <button type="button" class="quantity-btn decrease" onclick="decreaseQuantity()">
+                                                <i class="bi bi-dash"></i>
+                                            </button> *@
+                                            <button type="button" class="quantity-btn decrease-btn" onclick="decreaseQuantity()">
+                                                                    <i class="bi bi-dash"></i>
+                                                                </button>
+                                            <input type="number" name="quantity" class="quantity-input" value="1" min="1" max="@Model.productList.StockQuantity" id="quantity" />
+                                            @* <button type="button" class="quantity-btn increase" onclick="increaseQuantity(@Model.productList.StockQuantity)">
+                                                <i class="bi bi-plus"></i>
+                                            </button> *@
+                                              <button type="button" class="quantity-btn increase-btn" onclick="increaseQuantity(@Model.productList.StockQuantity)">
+                                               <i class="bi bi-plus"></i>
+                                               </button>
+                                        </div>
+                                        <small class="text-muted">Maximum @Model.productList.StockQuantity items available</small>
+                                    </div>
+                                </div>
+
+                                <!-- Action Buttons -->
+                                <div class="product-actions">
+                                    <button type="submit" class="btn btn-primary add-to-cart-btn">
+                                        <i class="bi bi-cart-plus"></i> Add to Cart
+                                    </button>
+                                   
+                                    <a asp-controller="Cart" asp-action="Index" class="btn btn-outline-secondary">
+                                        <i class="bi bi-cart"></i> View Cart
+                                    </a>
+                                </div>
+                            </form>
+                        }
+                        else
+                        {
+                            <div class="product-actions">
+                                <button class="btn btn-secondary" disabled>
+                                    <i class="bi bi-cart-dash"></i> Out of Stock
+                                </button>
+                            </div>
+                        }
+
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* ////ACCRODION *@
+        <div class="row mt-5" data-aos="fade-up">
+            <div class="col-12">
+                <div class="product-details-accordion">
+
+                    <!-- Reviews Accordion -->
+                    <div class="accordion-item" id="reviews">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#reviewsContent" aria-expanded="false" aria-controls="reviewsContent">
+                                Customer Reviews (@Model.Reviews.Count())
+                            </button>
+                        </h2>
+                        <div id="reviewsContent" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <div class="product-reviews">
+                                    @{
+                                        // Calculate average rating and rating breakdown
+                                        var totalReviews = Model.Reviews.Count();
+                                        var averageRating = totalReviews > 0 ? Math.Round(Model.Reviews.Average(r => r.Rating), 1) :
+                                        0.0;
+                                        var ratingCounts = new int[6]; // Index 1-5 for ratings
+                                        foreach (var review in Model.Reviews)
+                                        {
+                                            if (review.Rating >= 1 && review.Rating <= 5) { ratingCounts[review.Rating]++; }
+                                        }
+                                    }
+ <div class="reviews-summary">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="overall-rating">
+                                                    <div class="rating-number">4.5</div>
+                                                    <div class="rating-stars">
+                                                        @for (int i = 1; i <= 5; i++)
+                                                        {
+                                                            if (averageRating >= i)
+                                                            {
+                                                                <i class="bi bi-star-fill"></i>
+                                                            }
+                                                            else if (averageRating >= i - 0.5)
+                                                            {
+                                                                <i class="bi bi-star-half"></i>
+                                                            }
+                                                            else
+                                                            {
+                                                                <i class="bi bi-star"></i>
+                                                            }
+                                                        }
+                                                    </div>
+                                                    <div class="rating-count">Based on @totalReviews reviews</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-8">
+                                                <div class="rating-breakdown">
+
+
+                                                    @for (int i = 5; i >= 1; i--)
+                                                    {
+                                                        var percentage = totalReviews > 0 ? (ratingCounts[i] * 100.0 / totalReviews)
+                                                        : 0;
+                                                        <div class="rating-bar">
+                                                            <div class="rating-label">@i star@(i > 1 ? "s" : "")</div>
+                                                            <div class="progress">
+                                                                <div class="progress-bar" role="progressbar"
+                                                                     style="width: @percentage%;" aria-valuenow="@percentage"
+                                                                     aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                            <div class="rating-count">@ratingCounts[i]</div>
+                                                        </div>
+                                                    }
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="reviews-list">
+                                        @foreach (var review in Model.Reviews)
+                                        {
+                                            <!-- Review Item -->
+                                            <div class="review-item">
+                                                <div class="review-header">
+                                                    <div class="reviewer-info">
+                                                        <img src="~/frontassets/img/person/profile.png" alt="Reviewer"
+                                                             class="reviewer-avatar">
+                                                        <div>
+                                                            <h5 class="reviewer-name">@review.ReviewerName</h5>
+                                                            <div class="review-date">
+                                                                @review.ReviewDate?.ToString("MMMM dd, yyyy")
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="review-rating">
+                                                        @for (int i = 1; i <= 5; i++)
+                                                        {
+                                                            if (review.Rating >= i)
+                                                            {
+                                                                <i class="bi bi-star-fill"></i>
+                                                            }
+                                                            else if (review.Rating >= i - 0.5)
+                                                            {
+                                                                <i class="bi bi-star-half"></i>
+                                                            }
+                                                            else
+                                                            {
+                                                                <i class="bi bi-star"></i>
+                                                            }
+                                                        }
+                                                    </div>
+                                                </div>
+
+                                                <div class="review-content">
+                                                    <p>@review.ReviewContent</p>
+                                                </div>
+                                            </div>
+
+                                            <!-- End Review Item -->
+                                        }
+                                    </div>
+
+
+
+
+
+
+<div class="review-form-container mt-5">
+    <h4>Write a Review</h4>
+
+    @if (Context.Session.GetString("UserId") != null)
+    {
+        <form asp-controller="Home" asp-action="SubmitReview" method="post" class="review-form">
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" name="ProductId" value="@Model.productList.ProductId" />
+            <!-- Hidden fields for ReviewerName and ReviewerEmail -->
+            <input type="hidden" name="ReviewerName" value="@Context.Session.GetString("UserName")" />
+            <!-- Remove direct DB query from view, fetch email in controller instead -->
+            <input type="hidden" name="ReviewerEmail" value="" /> <!-- We'll set this in the controller -->
+
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="rating-select mb-4">
+                <label class="form-label">Your Rating</label>
+                <div class="star-rating">
+                    @for (int i = 5; i >= 1; i--)
+                    {
+                        <input type="radio" id="star@(i)" name="Rating" value="@i" required>
+                        <label for="star@(i)" title="@i star@(i > 1 ? "s" : "")">
+                            <i class="bi bi-star-fill"></i>
+                        </label>
+                    }
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="review-content" class="form-label">Your Review</label>
+                <textarea class="form-control" id="review-content" name="ReviewContent" rows="4" required></textarea>
+                <div class="form-text">Tell others what you think about this product. Be honest and helpful!</div>
+            </div>
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary">Submit Review</button>
+            </div>
+        </form>
+    }
+    else
+    {
+        <p>Please <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Context.Request.Path">log in</a> to submit a review.</p>
+    }
+</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        </div>
+
+    </section>
+</main>
+
+
+<script>
+
+
+         document.addEventListener('DOMContentLoaded', function () {
+        const starInputs = document.querySelectorAll('.star-rating input[type="radio"]');
+
+        starInputs.forEach(input => {
+            input.addEventListener('change', function () {
+                const starRating = input.closest('.star-rating');
+                const labels = starRating.querySelectorAll('label');
+                labels.forEach(label => {
+                    label.querySelector('i.bi-star-fill').style.color = '#ccc'; // Reset to gray
+                });
+                let currentLabel = input.nextElementSibling;
+                while (currentLabel) {
+                    currentLabel.querySelector('i.bi-star-fill').style.color = '#ffc107'; // Yellow for selected and previous
+                    currentLabel = currentLabel.nextElementSibling;
+                }
+            });
+        });
+
+        // Initialize selected state on page load (for pre-selected ratings, if any)
+        const checkedInput = document.querySelector('.star-rating input[type="radio"]:checked');
+        if (checkedInput) {
+            checkedInput.dispatchEvent(new Event('change'));
+        }
+    });
+
+
+
+
+
+    function decreaseQuantity() {
+        const input = document.getElementById('quantity');
+        if (input.value > 1) {
+            input.value = parseInt(input.value) - 1;
+        }
+    }
+
+    function increaseQuantity(maxStock) {
+        const input = document.getElementById('quantity');
+        if (parseInt(input.value) < maxStock) {
+            input.value = parseInt(input.value) + 1;
+        }
+    }
+
+    @* function buyNow() {
+        // First add to cart, then redirect to cart
+        const form = document.querySelector('.add-to-cart-form');
+        const formData = new FormData(form);
+
+        // You can modify this to directly go to checkout instead
+        form.submit();
+
+        // After form submission, redirect to cart (you might want to handle this in controller)
+        setTimeout(() => {
+            window.location.href = '@Url.Action("Index", "Cart")';
+        }, 1000);
+    } *@
+
+    // Auto-hide alerts after 5 seconds
+    document.addEventListener('DOMContentLoaded', function() {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            setTimeout(() => {
+                if (alert.parentNode) {
+                    alert.classList.remove('show');
+                    setTimeout(() => {
+                        if (alert.parentNode) {
+                            alert.remove();
+                        }
+                    }, 150);
+                }
+            }, 5000);
+        });
+    });
+</script>

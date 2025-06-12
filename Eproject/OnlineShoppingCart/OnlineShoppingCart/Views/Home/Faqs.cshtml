@@ -1,0 +1,182 @@
+﻿@model List<Faqcategory>
+
+@{
+    ViewData["Title"] = "FAQ";
+}
+
+<!-- Page Title -->
+<div class="page-title light-background">
+    <div class="container">
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="index.html">Home</a></li>
+                <li class="current">Faq</li>
+            </ol>
+        </nav>
+        <h1>Faq</h1>
+    </div>
+</div><!-- End Page Title -->
+<!-- Faq Section -->
+<section class="faq-9 faq section" id="faq">
+    <div class="container">
+        <div class="row">
+            <div class="container section-title" data-aos="fade-up">
+                <h2>Our Faqs</h2>
+                <p class="faq-description">If you have other burning questions we weren’t able to address here, feel free to email</p>
+            </div>
+        </div>
+
+        @foreach (var category in Model.Where(c => c.Faqs?.Any() == true))
+        {
+            <div class="faq mb-5 mt-5">
+                <div class="row">
+                    <div class="col-lg-5" data-aos="fade-up">
+                        <h2 class="faq-title">@category.Fcategory</h2>
+                    </div>
+                    <div class="col-lg-7" data-aos="fade-up" data-aos-delay="300">
+                        <div class="faq-container">
+                            @foreach (var faq in category.Faqs)
+                            {
+                                <div class="faq-item">
+                                    <h3>@faq.Fquestion</h3>
+                                    <div class="faq-content">
+                                        <p>@faq.Fanswer</p>
+                                    </div>
+                                    <i class="faq-toggle bi bi-chevron-right"></i>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+        }
+    </div>
+</section><!-- End Faq Section -->
+
+
+                                    <style>
+    /*--------------------------------------------------------------
+    # Faq Section
+    --------------------------------------------------------------*/
+    .faq .faq-title {
+        font-size: 30px;
+        line-height: 36px;
+        font-weight: 400;
+        margin-bottom: 1rem;
+        color: rgb(17, 17, 17);
+    }
+
+    .faq-heading {
+        font-size: 40px;
+        font-weight: 600;
+        color: rgb(17, 17, 17);
+        line-height: 44px;
+    }
+
+    .faq-title::after {
+        content: "";
+        display: inline-block;
+        width: 60px;
+        height: 2px;
+        background: black;
+        margin-left: 10px;
+        vertical-align: middle;
+    }
+
+    .faq .faq-description {
+        font-size: 18px;
+        color: rgb(85, 85, 85);
+        line-height: 27px;
+        margin-bottom: 2rem;
+    }
+
+    .faq .faq-arrow {
+        color: var(--accent-color);
+    }
+
+    .faq .faq-container .faq-item {
+        background-color: var(--surface-color);
+        position: relative;
+        padding: 20px;
+        margin-bottom: 15px;
+        overflow: hidden;
+    }
+
+    .faq .faq-container .faq-item {
+        border: none;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+        .faq .faq-container .faq-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .faq .faq-container .faq-item h3 {
+            font-weight: 500;
+            font-size: 20px;
+            color: rgb(17, 17, 17);
+            line-height: 24px;
+            margin: 0 30px 0 0;
+            transition: 0.3s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+            .faq .faq-container .faq-item h3 .num {
+                color: var(--accent-color);
+                padding-right: 5px;
+            }
+
+            .faq .faq-container .faq-item h3:hover {
+                color: var(--accent-color);
+            }
+
+        .faq .faq-container .faq-item .faq-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: 0.3s ease-in-out;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+            .faq .faq-container .faq-item .faq-content p {
+                margin-bottom: 0;
+                overflow: hidden;
+                font-size: 15px;
+                line-height: 28px;
+                color: rgb(85, 85, 85);
+                font-weight: 400;
+            }
+
+        .faq .faq-container .faq-item .faq-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 16px;
+            line-height: 0;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+            .faq .faq-container .faq-item .faq-toggle:hover {
+                color: var(--accent-color);
+            }
+
+    .faq .faq-container .faq-active h3 {
+        color: var(--accent-color);
+    }
+
+    .faq .faq-container .faq-active .faq-content {
+        grid-template-rows: 1fr;
+        visibility: visible;
+        opacity: 1;
+        padding-top: 10px;
+    }
+
+    .faq .faq-container .faq-active .faq-toggle {
+        transform: rotate(90deg);
+        color: var(--accent-color);
+    }
+\ </style>

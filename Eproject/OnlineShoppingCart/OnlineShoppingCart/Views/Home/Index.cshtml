@@ -1,0 +1,153 @@
+﻿@model OnlineShoppingCart.Models.ProductViewModel
+
+
+
+
+
+<main class="main">
+
+
+    <!-- Page Title -->
+    <!-- End Page Title -->
+    <!-- Hero Section -->
+    <section class="categories section_header">
+        <div class="container">
+            <div class="row">
+
+
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+                            <div class="categories__item" style="background-image: url('frontassets/img/product/slider2.jpg');"></div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+                            <div class="categories__item" style="background-image: url('frontassets/img/product/headerImg.jpeg');"></div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+                            <div class="categories__item" style="background-image: url('frontassets/img/product/headerimg3.jpeg');"></div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+                            <div class="categories__item" style="background-image: url('frontassets/img/product/headerimg4.jpeg');"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 p-0">
+                    <div class="row">
+
+                        <div class="col-lg-12">
+                            <div class="categories__item" style="background-image: url('frontassets/img/product/headerimg2.jpeg');"></div>
+
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="categories__item" style="background-image: url('frontassets/img/product/header.jpeg');"></div>
+
+                        </div>
+                        
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </section>    <!-- Category Cards Section -->
+
+
+
+    <section id="category-cards" class="category-cards section">
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Our Category</h2>
+            <p class="faq-description">Explore a wide range of gifts, cards, stationery, handbags, beauty picks, and more all in one place</p>
+        </div>
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <div class="row g-4">
+                @foreach (var cat in Model.CategoryToDisplay)
+                {
+                    <div class="col-12 col-sm-6 col-md-3" data-aos="fade-up" data-aos-delay="200">
+                        <div class="category-card">
+                            <img src="~/categoryImages/@cat.CategoryImage" alt="@cat.CategoryName" class="img-fluid" loading="lazy">
+                            <a href="@Url.Action("ProductsByCategory", "Home", new { id = cat.CategoryId })" class="category-link">
+                                @cat.CategoryName <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+
+    <!-- /Category Cards Section -->
+    <!-- /Products Cards Section -->
+    <section id="best-sellers" class="best-sellers section">
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Our Products</h2>
+            <p class="faq-description">Cards, gifts, bags, beauty, and more — everything you love, all in one store!</p>
+        </div><!-- End Section Title -->
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <div class="row g-4 justify-content-center">
+
+
+
+                      <!-- Card 1 -->
+      @foreach (var product in Model.ProductsToDisplay.Take(8))
+      {
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+  <div class="card">
+    <img
+      src="~/ProdImages/@product.ImagePath"
+      class=""
+      alt="@product.ProductName"
+      height="300"
+      style="object-fit: cover;"
+    />
+    @* <div class="card-img-overlay d-flex">
+      <a class="icon-btn" aria-label="View details"  asp-action="singleProduct" asp-controller="Home" asp-route-id="@product.ProductId">
+       <i class="fi fi-rs-eye"></i>
+        <span class="tooltip-custom">View Details</span>
+      </a>
+
+
+     
+    </div> *@
+
+                            <div class="card-img-overlay d-flex">
+                                <a class="icon-btn" aria-label="View details" asp-action="singleProduct" asp-controller="Home" asp-route-id="@product.ProductId">
+                                   View Details
+                                </a>
+
+
+
+                            </div>
+
+                            <div class="bg-warning px-3 py-3">
+     
+      <h3 class="card-title text-black">@product.ProductName</h3>
+      <p class="product-price">@product.Price Rs</p>
+
+    
+    </div>
+                           
+  </div>
+</div>
+      }
+
+              
+                <a asp-action="AllProducts" asp-controller="Home">See All products  <i class="bi bi-arrow-right"></i></a>
+
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+</main>
+
+
+
+
+
